@@ -1,6 +1,9 @@
 ﻿namespace BackendEcommerchSystem.Enums
 {
-    public class UserRole
+    public enum UserRole
     {
+
+        Admin = 1 , 
+        Customer= 2
     }
 }
