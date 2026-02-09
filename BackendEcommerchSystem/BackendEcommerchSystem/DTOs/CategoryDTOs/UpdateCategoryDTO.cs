@@ -1,10 +1,16 @@
-﻿namespace BackendEcommerchSystem.DTOs.CategoryDTO
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BackendEcommerchSystem.DTOs.CategoryDTO
 {
     public class UpdateCategoryDTO
     {
-     
 
-        public string Name { get; set; } = string.Empty;
-        public int? ParentId { get; set; }
+
+    
+            [Required]
+            [MaxLength(150)]
+            public string Name { get; set; } = string.Empty;
+      
+
     }
 }

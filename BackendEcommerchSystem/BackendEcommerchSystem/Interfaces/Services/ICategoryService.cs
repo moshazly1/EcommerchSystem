@@ -1,15 +1,15 @@
 ﻿using BackendEcommerchSystem.DTOs.CategoryDTO;
-
+using BackendEcommerchSystem.Entities;
 namespace BackendEcommerchSystem.Interfaces.Services
 {
     public interface ICategoryService
     {
-        public Task<IEnumerable<CategoryDTO>> GetAllAsync(); 
-        public Task<CategoryDTO> GetByIDAsync(int id);
-        public Task<CategoryDTO> CreateAsync(CreateCategoryDTO categoryDTO);
+       Task<IEnumerable<CategoryDTO>> GetAllAsync();
+       Task<CategoryDTO> GetByIDAsync(int id);
+        Task<CategoryDTO> CreateAsync(CreateCategoryDTO categoryDTO);
 
-        public Task<CategoryDTO> UpdateAsync(int id , UpdateCategoryDTO dto); 
-        public Task<CategoryDTO> DeleteAsync(int id);  
+        Task<CategoryDTO> UpdateAsync(int id , UpdateCategoryDTO dto); 
+      Task<CategoryDTO> DeleteAsync(int id);
         
     }
 }
