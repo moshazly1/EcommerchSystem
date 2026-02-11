@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BackendEcommerchSystem.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 
@@ -20,8 +21,10 @@ namespace BackendEcommerchSystem.Entities
         public decimal Price { get; set; }
 
         [Required]
+        [Range(0, int.MaxValue)]                                                                                                                                                                                                                                                                                
         public int Stock { get; set; }
-
+        [Required]
+        public ProductCondition Condition { get; set; }
 
         [Required]
         public int BrandId { get; set; }     
