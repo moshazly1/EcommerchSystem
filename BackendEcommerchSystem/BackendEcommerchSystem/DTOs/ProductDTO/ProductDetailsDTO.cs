@@ -2,7 +2,7 @@
 
 namespace BackendEcommerchSystem.DTOs.ProductDTO
 {
-    public class ProductDTO
+    public class ProductDetailsDTO
     {
 
         public int Id { get; set; }
@@ -24,5 +24,6 @@ namespace BackendEcommerchSystem.DTOs.ProductDTO
         public string SubCategoryName { get; set; } = string.Empty;
 
         public DateTime CreatedAt { get; set; }
+        public List<ProductImageDTO> Images { get; set; } = new();
     }
 }

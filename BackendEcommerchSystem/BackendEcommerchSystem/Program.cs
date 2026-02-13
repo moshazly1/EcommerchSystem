@@ -24,7 +24,9 @@ namespace BackendEcommerchSystem
             builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
             builder.Services.AddScoped<ISubCategoryService, SubCategoryServise>();
             builder.Services.AddScoped<IProductRepository,ProductRepository>();
-            builder.Services.AddScoped<IProductService, ProductServices>(); 
+            builder.Services.AddScoped<IProductService, ProductServices>();
+            builder.Services.AddScoped<IProductImageServices, ProductImageService>(); 
+            builder.Services.AddScoped<IProductImageRepository, ProductImageReposatory>(); 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

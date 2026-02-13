@@ -18,7 +18,7 @@ namespace BackendEcommerchSystem.Repositorie
         {
             return await _appContext.products
                 .Include(p => p.Brand)
-                .Include(p => p.SubCategory)
+                .Include(p => p.SubCategory).Include(p=>p.ProductImages)
                 .Where(p => p.IsActive).ToListAsync();
         }
 

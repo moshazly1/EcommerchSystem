@@ -1,5 +1,6 @@
 ﻿using BackendEcommerchSystem.DTOs.ProductDTO;
 using BackendEcommerchSystem.Entities;
+using BackendEcommerchSystem.Enums;
 using BackendEcommerchSystem.Interfaces.Repositories;
 using BackendEcommerchSystem.Interfaces.Services;
 
@@ -13,36 +14,33 @@ namespace BackendEcommerchSystem.Services
             _productRepository = productRepository;       
         }        
 
-        public async Task<IEnumerable<ProductDTO>> GetAllProduct()
+        public async Task<IEnumerable<ProductListDTO>> GetAllProduct()
         {
             var product =  await _productRepository.GetAllProductsAsync();
 
-            var resalt = product.Select(p => new ProductDTO
+            var resalt = product.Select(p => new ProductListDTO
             {
-                Id = p.Id,  
-                Name = p.Name,  
-                 Description = p.Description,   
-                 Stock = p.Stock,   
-                 Price= p.Price,  
-                 Condition= p.Condition,    
-                 IsActive= p.IsActive,  
-                 BrandName=p.Brand?.Name ?? "",
-                 SubCategoryName = p.SubCategory?.Name ??  "" , 
-                 CreatedAt= p.CreatedAt, 
-                 
-
-            }); 
+                Description = p.Description,
+                Id = p.Id,
+                Name = p.Name,
+                Price = p.Price,
+                Stock = p.Stock,
+                MainImageUrl = p.ProductImages
+                 .FirstOrDefault(img => img.ImageType == ProductImageType.Main)?.ImageUrl
+                 ?? p.ProductImages.FirstOrDefault()?.ImageUrl
+                 ?? ""
+            });
             return resalt; 
         }
 
-        public async Task<ProductDTO> GetProductByID(int id)
+        public async Task<ProductDetailsDTO> GetProductByID(int id)
         {
             var product = await _productRepository.GetByIdProductAsync(id); 
             if(product == null )
             {
                 throw new Exception("Product not found");
             }
-            var resalt = new ProductDTO
+            var resalt = new ProductDetailsDTO
             {
                 Id = product.Id,
                 BrandName = product.Brand?.Name ?? string.Empty,
@@ -54,11 +52,16 @@ namespace BackendEcommerchSystem.Services
                 Stock = product.Stock,
                 SubCategoryName = product.SubCategory?.Name ?? string.Empty , 
                 Name = product.Name,
+                Images = product.ProductImages.Select(img => new ProductImageDTO
+                {
+                    ImageType = img.ImageType,  
+                    ImageUrl = img.ImageUrl,        
+                }).ToList()
             }; 
             return resalt;
         }
 
-        public async Task<ProductDTO> AddProduct(CreateProductDTO dto)
+        public async Task<ProductDetailsDTO> AddProduct(CreateProductDTO dto)
         {
             var product = new Product
             {
@@ -74,7 +77,7 @@ namespace BackendEcommerchSystem.Services
             await _productRepository.AddPrductAsync(product);
            
 
-            return new ProductDTO
+            return new ProductDetailsDTO
             {
                 Id = product.Id,        
                 Name = product.Name,
@@ -97,7 +100,7 @@ namespace BackendEcommerchSystem.Services
 
       
 
-        public async Task<ProductDTO> UpdateProduct(int id, UpdateProductDTO dto)
+        public async Task<ProductDetailsDTO> UpdateProduct(int id, UpdateProductDTO dto)
         {
             var product = await _productRepository.GetByIdProductAsync(id);
             if (product == null )
@@ -115,7 +118,7 @@ namespace BackendEcommerchSystem.Services
             await _productRepository.UpdateProduct(id , product);
 
 
-            return new ProductDTO
+            return new ProductDetailsDTO
             {
                 Id = product.Id,
                 Name = product.Name,

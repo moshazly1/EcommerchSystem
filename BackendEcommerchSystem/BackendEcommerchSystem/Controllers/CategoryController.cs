@@ -45,7 +45,6 @@ namespace BackendEcommerchSystem.Controllers
                 responce.StatusMessage = "something went wrong ";
                 return BadRequest(responce);
             }
-
         }
         
         [HttpGet("{id}")]
