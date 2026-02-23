@@ -6,8 +6,22 @@ namespace BackendEcommerchSystem.Data
     public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext>options) : base(options)
-        {
+        { 
 
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = 5,
+                FullName = "System Admin",
+                Email = "admin@myshop.com",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("Mohamed@2005"),
+            Role = Enums.UserRole.Admin , 
+             CreatedAt = DateTime.Now,  
+             IsAcive = true     
+            }); 
         }
         public DbSet<Brand> Brands { get; set; }
 

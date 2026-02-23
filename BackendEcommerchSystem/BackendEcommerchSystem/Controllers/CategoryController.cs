@@ -4,6 +4,7 @@ using BackendEcommerchSystem.Entities;
 using BackendEcommerchSystem.Interfaces.Services;
 using BackendEcommerchSystem.Model;
 using BackendEcommerchSystem.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -73,7 +74,9 @@ namespace BackendEcommerchSystem.Controllers
                 return BadRequest(response);
             }
         }
+        
         [HttpDelete("{id}")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> DeleteCategory (int id)
         {
             BaseResponseModel response = new BaseResponseModel();
