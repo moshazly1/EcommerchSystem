@@ -43,5 +43,20 @@ namespace BackendEcommerchSystem.Controllers
             }
             return Ok(result);
         }
+        [HttpPost("refreshToken")]
+        public async Task<IActionResult> RefreshToken([FromBody] string token)
+        {
+            
+            var result = await _authService.RefreshTokenAsync(token);
+
+            if (!result.IsAuthentication)
+            {
+               
+                return BadRequest(result.Mesage);
+            }
+
+            
+            return Ok(result);
+        }
     }
 }

@@ -22,8 +22,9 @@ namespace BackendEcommerchSystem.Entities
        public  UserRole Role { get; set; } = UserRole.Customer;  
       public   bool IsAcive { get; set; } = true;         
 
-       public   DateTime CreatedAt { get; set; }  = DateTime.Now;        
-        
-       public   ICollection<Order> Orders { get; set; }  = new List<Order>();       
+       public   DateTime CreatedAt { get; set; }  = DateTime.Now;
+        public string? RefreshToken { get; set; }
+        public DateTime? RefreshTokenExpiryTime { get; set; }
+        public   ICollection<Order> Orders { get; set; }  = new List<Order>();       
     }
 }

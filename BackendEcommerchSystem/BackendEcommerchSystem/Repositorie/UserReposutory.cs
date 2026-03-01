@@ -30,7 +30,7 @@ namespace BackendEcommerchSystem.Repositorie
         public async Task<IEnumerable<User>> GetAllUserAsync()
         {
            var  user =   await _appDbContext.users.ToListAsync();
-         return user;   
+           return user;   
         }
 
         public async Task<User> GetByEmailAsync(string email)
@@ -52,5 +52,17 @@ namespace BackendEcommerchSystem.Repositorie
         {
            _appDbContext.users.Update(user);
         }
+
+        public async Task UpdateAsync(User user)
+        {
+            _appDbContext.users.Update(user);
+            await Task.CompletedTask; 
+        }
+        public async Task<User> GetByRefreshTokenAsync(string token)
+        {
+
+            return await _appDbContext.users.FirstOrDefaultAsync(u => u.RefreshToken == token);
+        }
+
     }
 }

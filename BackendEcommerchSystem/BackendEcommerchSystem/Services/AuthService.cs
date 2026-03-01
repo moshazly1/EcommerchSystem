@@ -2,9 +2,11 @@
 using BackendEcommerchSystem.Entities;
 using BackendEcommerchSystem.Interfaces.Repositories;
 using BackendEcommerchSystem.Interfaces.Services;
+using BackendEcommerchSystem.Repositorie;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace BackendEcommerchSystem.Services
@@ -38,6 +40,13 @@ namespace BackendEcommerchSystem.Services
                 );
             return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor); 
         }
+        public string GenerateRefrshToken()
+        {
+            var RandomeNumber = new byte[64]; 
+            using var rng = RandomNumberGenerator.Create(); 
+          rng.GetBytes(RandomeNumber);  
+            return Convert.ToBase64String(RandomeNumber);   
+        }
 
         public async Task<AuthResponseDTO> LoginAsync(LoginDTO model)
         {
@@ -47,17 +56,63 @@ namespace BackendEcommerchSystem.Services
                 return new AuthResponseDTO { Mesage = "Inveld Email or Password!" }; 
             }
              var token =  CreateToken(user); 
+             var refreshToken = GenerateRefrshToken();
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+             await _userRepository.UpdateAsync(user);   
+            await _userRepository.SaveChangesAsync();
             return new AuthResponseDTO
             {
                 IsAuthentication = true,
                 Mesage = "Login successful!",
                 Username = user.FullName,
+                
                 Email = user.Email,
-                Token = token , 
-                ExpiresOn = DateTime.Now.AddDays(Convert.ToDouble(_configuration["JWT:DurationInDays"]))
-            }; 
+                Token = token,
+                ExpiresOn = DateTime.Now.AddDays(Convert.ToDouble(_configuration["JWT:DurationInDays"])) , 
+            AccessToken = token,
+                RefreshToken = refreshToken,
+                RefreshTokenExpiration = user.RefreshTokenExpiryTime.Value,
+            };  
         }
 
+        public async Task<AuthResponseDTO> RefreshTokenAsync(string Token)
+        {
+            var user = await _userRepository.GetByRefreshTokenAsync(Token);
+
+            // 1. لو التوكن مش موجود أو منتهي
+            if (user == null || user.RefreshTokenExpiryTime <= DateTime.Now)
+            {
+                return new AuthResponseDTO
+                {
+                    IsAuthentication = false,
+                    Mesage = "Invalid or expired refresh token!",
+                };
+            } 
+
+          
+            var newAccessToken = CreateToken(user);
+            var newRefreshToken = GenerateRefrshToken();
+
+          
+            user.RefreshToken = newRefreshToken; 
+            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+
+            await _userRepository.UpdateAsync(user);
+            await _userRepository.SaveChangesAsync();
+
+            return new AuthResponseDTO
+            {
+                IsAuthentication = true,
+                Mesage = "Token refreshed successfully!",
+                Token = newAccessToken,
+                AccessToken = newAccessToken,
+                RefreshToken = newRefreshToken,
+                Username = user.FullName,
+                Email = user.Email,
+                ExpiresOn = DateTime.Now.AddDays(Convert.ToDouble(_configuration["JWT:DurationInDays"]))
+            };
+        }
         public async Task<AuthResponseDTO> RegisterAsync(RegisterDTO model)
         {
            if( await _userRepository.GetByEmailAsync(model.Email) != null)

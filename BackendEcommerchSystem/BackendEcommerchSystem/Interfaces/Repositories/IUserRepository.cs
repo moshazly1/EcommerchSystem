@@ -6,9 +6,11 @@ namespace BackendEcommerchSystem.Interfaces.Repositories
     {
         Task<IEnumerable<User>> GetAllUserAsync () ; 
         Task<User> GetByEmailAsync(string email); 
-        Task<User> GetByIDAsync(int id);        
+        Task<User> GetByIDAsync(int id);
+        Task UpdateAsync(User user);
         Task AddAsync (User user);
         Task DeleteUserAsync(int id);  
-        Task SaveChangesAsync(); 
+        Task SaveChangesAsync();
+         Task<User> GetByRefreshTokenAsync(string token); 
     }
 }
