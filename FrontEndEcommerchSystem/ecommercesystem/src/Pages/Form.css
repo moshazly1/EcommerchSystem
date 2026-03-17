@@ -1,0 +1,4 @@
+.form-control::placeholder {
+  font-weight: bold;
+  color: #0000003b !important;
+}
