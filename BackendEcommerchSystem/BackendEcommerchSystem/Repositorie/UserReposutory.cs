@@ -35,7 +35,7 @@ namespace BackendEcommerchSystem.Repositorie
 
         public async Task<User> GetByEmailAsync(string email)
         {
-         return   await _appDbContext.users.FirstOrDefaultAsync(u=>u.Email == email); 
+         return   await _appDbContext.users.FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower().Trim()); 
         }
 
         public Task<User> GetByIDAsync(int id)

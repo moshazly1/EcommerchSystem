@@ -66,7 +66,6 @@ namespace BackendEcommerchSystem.Services
                 IsAuthentication = true,
                 Mesage = "Login successful!",
                 Username = user.FullName,
-                
                 Email = user.Email,
                 Token = token,
                 ExpiresOn = DateTime.Now.AddDays(Convert.ToDouble(_configuration["JWT:DurationInDays"])) , 
@@ -115,41 +114,64 @@ namespace BackendEcommerchSystem.Services
         }
         public async Task<AuthResponseDTO> RegisterAsync(RegisterDTO model)
         {
-           if( await _userRepository.GetByEmailAsync(model.Email) != null)
-           {
-                return new AuthResponseDTO { Mesage = "Email is already registered!" }; 
-           }
 
-            if (model.Name.Length <2 )
+            var errors = new List<string>();
+
+           
+            var email = model.Email?.Trim();
+            var name = model.Name?.Trim();
+            var password = model.Password;
+
+       
+            if (string.IsNullOrEmpty(email))
+                errors.Add("Email is required.");
+            else if (!System.Text.RegularExpressions.Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                errors.Add("Invalid email format.");
+            else if (await _userRepository.GetByEmailAsync(email) != null)
+                errors.Add("Email is already registered.");
+
+        
+            if (string.IsNullOrEmpty(name))
+                errors.Add("Name is required.");
+            else if (name.Length < 2)
+                errors.Add("Name must be at least 2 characters long.");
+
+     
+            if (string.IsNullOrEmpty(password))
+                errors.Add("Password is required.");
+            else
+            {
+                if (password.Length < 8)
+                    errors.Add("Password must be at least 8 characters long.");
+
+                if (!password.Any(char.IsUpper))
+                    errors.Add("Password must contain at least one uppercase letter.");
+
+                if (!password.Any(char.IsLower))
+                    errors.Add("Password must contain at least one lowercase letter.");
+
+                if (!password.Any(char.IsDigit))
+                    errors.Add("Password must contain at least one number.");
+
+                if (!System.Text.RegularExpressions.Regex.IsMatch(password, @"[!@#$%^&*()]"))
+                    errors.Add("Password must contain at least one special character (!@#$%^&*).");
+            }
+
+            if (errors.Any())
             {
                 return new AuthResponseDTO
                 {
-                    Mesage = "Password must be at least 2 character long."
+                    IsAuthentication = false,
+                    Mesage = string.Join(" \n ", errors)
                 };
-               }  
-            if(model.Password.Length < 8 ) {
-                return new AuthResponseDTO { Mesage = "Password must be at least 8 characters long."
-                };
-            }
-            if(!System.Text.RegularExpressions.Regex.IsMatch(model.Password , @"[!@#$%^&*()]") )
-            {
-                return new AuthResponseDTO { Mesage = "Password must be at least 8 characters long." };
-            }
-            if(!model.Password.Any(char.IsUpper))
-            {
-                return new AuthResponseDTO { Mesage = "Password must contain at least one uppercase letter." };
-            }
-            if(!model.Password.Any(char.IsDigit))
-            {
-                return new AuthResponseDTO { Mesage = "Password must contain at least one Number letter." };
             }
 
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.Password);
             
             var user = new User
             {
-                FullName = model.Name,
-                Email = model.Email,
+                FullName = name,
+                Email = email,
                 PasswordHash = hashedPassword,
                 Role = Enums.UserRole.Customer,
                  CreatedAt = DateTime.UtcNow,       
@@ -162,8 +184,8 @@ namespace BackendEcommerchSystem.Services
             {
                 IsAuthentication = true,    
                 Mesage = "User registered successfully!" , 
-                Username = model.Name,   
-                Email = model.Email,   
+                Username = name,   
+                Email = email,   
                Token = token,
                ExpiresOn = DateTime.Now.AddDays(Convert.ToDouble(_configuration["JWT:DurationInDays"]))
             }; 

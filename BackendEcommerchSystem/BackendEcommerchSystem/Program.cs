@@ -72,7 +72,8 @@ namespace BackendEcommerchSystem
                     policy => policy
                                 .WithOrigins("http://localhost:3000") 
                                 .AllowAnyHeader()
-                                .AllowAnyMethod());
+                                .AllowAnyMethod()
+                              .AllowCredentials());
             });
 
            
@@ -89,11 +90,11 @@ namespace BackendEcommerchSystem
                 app.UseSwagger();
                 app.UseSwaggerUI();
             //}
-            app.UseCors("AllowAll");      
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
             app.UseCors("AllowFrontend");
+            app.UseHttpsRedirection();
+            app.UseAuthentication();
+            app.UseAuthorization();
+          
 
             app.MapControllers();
 

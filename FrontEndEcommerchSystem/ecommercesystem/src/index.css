@@ -4,8 +4,12 @@
   box-sizing: border-box;
 }
 
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Lato:wght@400;700&display=swap");
+
 body {
-  font-family: "Cairo", sans-serif;
+  font-family: "Lato", "Cairo", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 :root {
