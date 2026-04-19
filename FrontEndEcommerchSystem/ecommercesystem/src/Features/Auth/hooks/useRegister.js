@@ -2,9 +2,10 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RegisterRequast } from "../Service/authApi";
 import useAuth from "./useAuth";
-import { User } from "../../../Pages/Context/Context";
+import { AuthContext, User } from "../../../Pages/Context/AuthProvider";
 
 export const useRegister = () => {
+  const { setAuth } = useContext(AuthContext);
   const [formData, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -15,8 +16,8 @@ export const useRegister = () => {
   const [isValid, setIsvaled] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { setAuth } = useAuth();
-  const UserNow = useContext(User);
+
+  // const UserNow = useContext(User);
   function HandelChange(e) {
     setForm({ ...formData, [e.target.name]: e.target.value });
   }
@@ -33,23 +34,33 @@ export const useRegister = () => {
       };
 
       const res = await RegisterRequast(dataToSend);
-      const token = res.data.token;
+      console.log(res);
+      const Token = res?.data?.accessToken;
       const userDetalse = res.data;
+      const roles = res?.data?.role;
 
-      UserNow.setAuth({ accessToken: token, user: userDetalse });
+      console.log(res);
+      console.log(Token);
+      setAuth({ accessToken: Token, user: userDetalse, roles });
+
+      console.log(JSON.stringify(res));
+
       console.log(userDetalse);
-      console.log(token);
+
       if (res && res.data) {
         console.log(res.data);
         setMessage(res.data.mesage);
         setIsvaled(res.data.isAuthentication || false);
 
         if (res.data.isAuthentication) {
-          navigate("/");
+          if (Number(res.data.role) === 1) {
+            navigate("/");
+          } else {
+            navigate("/");
+          }
         }
       }
     } catch (err) {
-      setIsvaled(false);
       setIsvaled(false);
       if (err.response && err.response.data) {
         setMessage(err.response.data);

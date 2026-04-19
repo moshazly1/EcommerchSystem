@@ -7,14 +7,13 @@ import Laptop from "../../../Assets/Laptop.png";
 import Computer from "../../../Assets/Computer.png";
 import Speaker from "../../../Assets/Speaker.png";
 import Mouse from "../../../Assets/Mouse.png";
-import { faEnvelope, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { useLogin } from "../hooks/useLogin";
 
 export default function LoginPage() {
-  const { HandelChange, HandelSubmit, Message, formData, isValid, loading } =
-    useLogin();
+  const { HandelChange, HandelSubmit, Message, isValid, loading } = useLogin();
   return (
     <>
       {loading && <Loader />}
@@ -162,12 +161,12 @@ export default function LoginPage() {
                       </Form.Group>
 
                       <div className="text-end mb-4">
-                        <a
+                        <Link
                           href="#"
                           className="small  text-decoration-none fw-bold"
                         >
                           Forgot Password?
-                        </a>
+                        </Link>
                       </div>
 
                       <Button
@@ -199,7 +198,6 @@ export default function LoginPage() {
                         variant="outline-light"
                         className="w-100 p-3 mb-4 text-dark shadow-sm border fw-bold "
                         style={{
-                          backgroundColor: "#fff",
                           fontSize: "14px",
                           backgroundColor: "var( --brand-200)",
                         }}
@@ -225,7 +223,7 @@ export default function LoginPage() {
 
                   <div>
                     <div className="m-2 mt-2">
-                      <p className="small fw-bold text-muted">
+                      <div className="small fw-bold text-muted">
                         Don't have an account ?{" "}
                         <Link
                           to="/register"
@@ -233,7 +231,7 @@ export default function LoginPage() {
                         >
                           <div>Sign Up</div>
                         </Link>
-                      </p>
+                      </div>
                     </div>
                     <img
                       style={{ width: "307px", height: "307px" }}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import useRefreshToken from "./useRefreshToken";
 import useAuth from "./useAuth";
 import Loader from "../../../Components/Loader/Loading";
@@ -8,8 +8,11 @@ const PersistLogin = () => {
   const [isLoading, setIsLoading] = useState(true);
   const refresh = useRefreshToken();
   const { auth } = useAuth();
+  const effectRan = useRef(false); // ✅ منع التكرار
 
   useEffect(() => {
+    if (effectRan.current === true) return; // ✅ لو اتشغل قبل كده، وقف
+
     const verifyRefreshToken = async () => {
       try {
         await refresh();
@@ -25,6 +28,10 @@ const PersistLogin = () => {
     } else {
       setIsLoading(false);
     }
+
+    return () => {
+      effectRan.current = true; // ✅ علّم إنه اتشغل
+    };
   }, []);
 
   return isLoading ? (

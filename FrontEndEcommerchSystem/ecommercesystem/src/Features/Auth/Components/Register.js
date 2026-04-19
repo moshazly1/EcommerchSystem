@@ -176,6 +176,7 @@ export default function Register() {
                 </Form.Group>
 
                 <Button
+                  disabled={loading}
                   variant="primary"
                   type="submit"
                   className="w-100 py-2 my-5 shadow-sm fw-bold fs-5"
@@ -184,7 +185,7 @@ export default function Register() {
                     border: "none",
                   }}
                 >
-                  Sign up
+                  {loading ? "Creating account..." : "Sign up"}
                 </Button>
 
                 <div

@@ -1,4 +1,6 @@
-﻿namespace BackendEcommerchSystem.DTOs.AcountDTO
+﻿using BackendEcommerchSystem.Enums;
+
+namespace BackendEcommerchSystem.DTOs.AcountDTO
 {
     public class AuthResponseDTO
     {
@@ -13,7 +15,7 @@
         public DateTime ExpiresOn { get; set; }
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
-        public DateTime RefreshTokenExpiration { get; set; }
-
+        public DateTime RefreshTokenExpiration { get; set; } = DateTime.UtcNow;
+        public UserRole Role { get; set; }
     }
 }

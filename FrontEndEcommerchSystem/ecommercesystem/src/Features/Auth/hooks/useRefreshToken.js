@@ -1,30 +1,33 @@
-import axios from "axios";
 import useAuth from "./useAuth";
-import { basURL, REFRESHTOKEN } from "../../../API/api";
+import { RefreshTokenRequast } from "../Service/authApi";
 
 const useRefreshToken = () => {
-  const { auth, setAuth } = useAuth();
-  const refresh = async () => {
-    const response = await axios.post(
-      `${basURL}${REFRESHTOKEN}`,
-      {},
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      },
-    );
-    setAuth((prev) => {
-      return {
-        ...prev,
-        accessToken: response.data.token,
+  const { setAuth } = useAuth();
 
-        user: { ...prev.user, refreshToken: response.data.refreshToken },
-      };
-    });
-    return response.data.token;
+  const refresh = async () => {
+    try {
+      const response = await RefreshTokenRequast();
+      console.log(response);
+      setAuth((prev) => ({
+        ...prev,
+        accessToken: response.data.accessToken,
+        roles: response.data.role,
+        user: {
+          ...prev.user,
+          username: response.data.username,
+          email: response.data.email,
+          role: response.data.role,
+        },
+      }));
+
+      return response.data.accessToken;
+    } catch (err) {
+      console.log("Refresh Token Error:", err);
+      return null;
+    }
   };
+
   return refresh;
 };
+
 export default useRefreshToken;

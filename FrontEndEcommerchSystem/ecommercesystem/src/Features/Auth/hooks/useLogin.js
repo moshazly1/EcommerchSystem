@@ -1,14 +1,15 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { User } from "../../../Pages/Context/Context";
+import useAuth from "./useAuth";
 import { LoginRequast } from "../Service/authApi";
 
 export const useLogin = () => {
+  const { setAuth } = useAuth();
   const [formData, setForm] = useState({ email: "", password: "" });
   const [Message, setMessage] = useState("");
   const [isValid, setIsvaled] = useState(false);
   const [loading, setLoading] = useState(false);
-  const UserNow = useContext(User);
+  // const UserNow = useContext(User);
   const navigate = useNavigate();
 
   const HandelChange = (e) => {
@@ -21,12 +22,14 @@ export const useLogin = () => {
     setMessage("");
     try {
       const res = await LoginRequast(formData);
-      const Token = res.data.token;
+      console.log(res);
+      const Token = res?.data?.accessToken;
       const userDetalse = res.data;
+      const roles = res?.data?.role;
 
       console.log(res);
       console.log(Token);
-      UserNow.setAuth({ accessToken: Token, user: userDetalse });
+      setAuth({ accessToken: Token, user: userDetalse, roles });
 
       if (res && res.data) {
         console.log(res.data);
@@ -34,7 +37,11 @@ export const useLogin = () => {
         setIsvaled(res.data.isAuthentication || false);
 
         if (res.data.isAuthentication) {
-          navigate("/");
+          if (Number(res.data.role) === 1) {
+            navigate("/");
+          } else {
+            navigate("/");
+          }
         }
       }
     } catch (err) {

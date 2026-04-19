@@ -40,6 +40,14 @@ namespace BackendEcommerchSystem.Services
                 );
             return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor); 
         }
+
+        public async Task<bool> ForgotPasswordAsync(string emailUser)
+        {
+            //var email = await _userRepository.GetByEmailAsync(emailUser); 
+            return true; ;
+
+        }
+
         public string GenerateRefrshToken()
         {
             var RandomeNumber = new byte[64]; 
@@ -72,24 +80,40 @@ namespace BackendEcommerchSystem.Services
             AccessToken = token,
                 RefreshToken = refreshToken,
                 RefreshTokenExpiration = user.RefreshTokenExpiryTime.Value,
+                Role = user.Role
             };  
+        }
+
+        public async Task LogoutAsync(string refreshToken)
+        {
+            var user = await _userRepository.GetByRefreshTokenAsync(refreshToken);
+            if (user == null) {
+                return;
+            }
+            user.RefreshToken = null;
+            user.RefreshTokenExpiryTime = null;
+            await _userRepository.UpdateAsync(user);
+            await _userRepository.SaveChangesAsync();
+
+
         }
 
         public async Task<AuthResponseDTO> RefreshTokenAsync(string Token)
         {
             var user = await _userRepository.GetByRefreshTokenAsync(Token);
 
-            // 1. لو التوكن مش موجود أو منتهي
-            if (user == null || user.RefreshTokenExpiryTime <= DateTime.Now)
+
+            if (user == null ||
+      user.RefreshToken != Token ||
+      user.RefreshTokenExpiryTime <= DateTime.Now)
             {
                 return new AuthResponseDTO
                 {
                     IsAuthentication = false,
-                    Mesage = "Invalid or expired refresh token!",
+                    Mesage = "Invalid or expired refresh token!"
                 };
-            } 
+            }
 
-          
             var newAccessToken = CreateToken(user);
             var newRefreshToken = GenerateRefrshToken();
 
@@ -106,90 +130,78 @@ namespace BackendEcommerchSystem.Services
                 Mesage = "Token refreshed successfully!",
                 Token = newAccessToken,
                 AccessToken = newAccessToken,
+                RefreshTokenExpiration = user.RefreshTokenExpiryTime.Value,
                 RefreshToken = newRefreshToken,
                 Username = user.FullName,
                 Email = user.Email,
-                ExpiresOn = DateTime.Now.AddDays(Convert.ToDouble(_configuration["JWT:DurationInDays"]))
+                ExpiresOn = DateTime.Now.AddDays(Convert.ToDouble(_configuration["JWT:DurationInDays"])) , 
+             Role = user.Role
             };
         }
         public async Task<AuthResponseDTO> RegisterAsync(RegisterDTO model)
         {
-
             var errors = new List<string>();
 
-           
             var email = model.Email?.Trim();
             var name = model.Name?.Trim();
             var password = model.Password;
 
-       
             if (string.IsNullOrEmpty(email))
                 errors.Add("Email is required.");
-            else if (!System.Text.RegularExpressions.Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
-                errors.Add("Invalid email format.");
-            else if (await _userRepository.GetByEmailAsync(email) != null)
-                errors.Add("Email is already registered.");
 
-        
             if (string.IsNullOrEmpty(name))
                 errors.Add("Name is required.");
-            else if (name.Length < 2)
-                errors.Add("Name must be at least 2 characters long.");
 
-     
             if (string.IsNullOrEmpty(password))
                 errors.Add("Password is required.");
-            else
-            {
-                if (password.Length < 8)
-                    errors.Add("Password must be at least 8 characters long.");
-
-                if (!password.Any(char.IsUpper))
-                    errors.Add("Password must contain at least one uppercase letter.");
-
-                if (!password.Any(char.IsLower))
-                    errors.Add("Password must contain at least one lowercase letter.");
-
-                if (!password.Any(char.IsDigit))
-                    errors.Add("Password must contain at least one number.");
-
-                if (!System.Text.RegularExpressions.Regex.IsMatch(password, @"[!@#$%^&*()]"))
-                    errors.Add("Password must contain at least one special character (!@#$%^&*).");
-            }
 
             if (errors.Any())
             {
                 return new AuthResponseDTO
                 {
                     IsAuthentication = false,
-                    Mesage = string.Join(" \n ", errors)
+                    Mesage = string.Join("\n", errors)
                 };
             }
 
-            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.Password);
-            
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+
             var user = new User
             {
                 FullName = name,
                 Email = email,
                 PasswordHash = hashedPassword,
                 Role = Enums.UserRole.Customer,
-                 CreatedAt = DateTime.UtcNow,       
+                CreatedAt = DateTime.UtcNow
             };
+
             await _userRepository.AddAsync(user);
             await _userRepository.SaveChangesAsync();
 
-            var token = CreateToken(user); 
+            var accessToken = CreateToken(user);
+            var refreshToken = GenerateRefrshToken();
+
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+
+            await _userRepository.UpdateAsync(user);
+            await _userRepository.SaveChangesAsync();
+
             return new AuthResponseDTO
             {
-                IsAuthentication = true,    
-                Mesage = "User registered successfully!" , 
-                Username = name,   
-                Email = email,   
-               Token = token,
-               ExpiresOn = DateTime.Now.AddDays(Convert.ToDouble(_configuration["JWT:DurationInDays"]))
-            }; 
-           
+                IsAuthentication = true,
+                Mesage = "User registered successfully!",
+                Username = user.FullName,
+                Email = user.Email,
+                AccessToken = accessToken,
+                Token = accessToken,
+                RefreshToken = refreshToken,
+                RefreshTokenExpiration = user.RefreshTokenExpiryTime.Value,
+                ExpiresOn = DateTime.Now.AddDays(
+                    Convert.ToDouble(_configuration["JWT:DurationInDays"])
+                ),
+                Role = user.Role
+            };
         }
 
     } 

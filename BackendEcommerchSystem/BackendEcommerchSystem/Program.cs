@@ -58,19 +58,12 @@ namespace BackendEcommerchSystem
          
 
             );
-            builder.Services.AddCors(options =>
-            {
-            options.AddPolicy("AllowAll",
-
-                builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
-                   
-                    ); 
-            });
+         
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowFrontend",
                     policy => policy
-                                .WithOrigins("http://localhost:3000") 
+                            .WithOrigins("http://localhost:3000", "http://localhost:5173")
                                 .AllowAnyHeader()
                                 .AllowAnyMethod()
                               .AllowCredentials());
@@ -91,7 +84,7 @@ namespace BackendEcommerchSystem
                 app.UseSwaggerUI();
             //}
             app.UseCors("AllowFrontend");
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
           
