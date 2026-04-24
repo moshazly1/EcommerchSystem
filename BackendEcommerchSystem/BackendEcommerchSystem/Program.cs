@@ -34,8 +34,10 @@ namespace BackendEcommerchSystem
             builder.Services.AddScoped<IProductImageServices, ProductImageService>(); 
             builder.Services.AddScoped<IProductImageRepository, ProductImageReposatory>();
             builder.Services.AddScoped<IUserServises, UserService>();
+            builder.Services.AddScoped<IEmailService , EmailService>(); 
             builder.Services.AddControllers();
             builder.Services.AddAuthentication(opthion =>
+          
             {
                 opthion.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opthion.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;

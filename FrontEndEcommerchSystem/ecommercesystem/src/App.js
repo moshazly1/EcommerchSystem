@@ -5,6 +5,8 @@ import Register from "./Features/Auth/Components/Register";
 import RequireAuth from "./Features/Auth/Components/RequirAuth";
 import PersistLogin from "./Features/Auth/hooks/PersistLogin";
 import Unauthorized from "./Features/Auth/Components/Unauthorized";
+import ResetPassword from "./Features/Auth/Components/Pages/ResetPassword";
+import ForgetPassword from "./Features/Auth/Components/Pages/ForgetPassword";
 
 const ROLES = {
   Admin: 1,
@@ -17,6 +19,8 @@ export default function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<Register />} />
       {/* <Route path="/" element={<HomePage />} /> */}
+      <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/forgetPassword" element={<ForgetPassword />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
 
       {/* protected page  */}

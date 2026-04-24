@@ -162,7 +162,7 @@ export default function LoginPage() {
 
                       <div className="text-end mb-4">
                         <Link
-                          href="#"
+                          to="/forgetPassword"
                           className="small  text-decoration-none fw-bold"
                         >
                           Forgot Password?

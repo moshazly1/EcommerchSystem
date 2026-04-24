@@ -5,6 +5,8 @@ import {
   REGISTER,
   LOGOUT,
   REFRESHTOKEN,
+  FORGETPASSWORD,
+  RESETPASSWORD,
 } from "../../../API/api";
 
 export const LoginRequast = async (formData) => {
@@ -37,4 +39,22 @@ export const RefreshTokenRequast = async () => {
     {},
     { withCredentials: true },
   );
+};
+
+export const ForgetPassword = async (email) => {
+  return await axios.post(
+    `${basURL}${FORGETPASSWORD}`,
+    { email },
+    {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    },
+  );
+};
+
+export const ResetPasswordRequest = async (Data) => {
+  return await axios.post(`${basURL}${RESETPASSWORD}`, Data, {
+    headers: { "Content-Type": "application/json" },
+    withCredentials: true,
+  });
 };

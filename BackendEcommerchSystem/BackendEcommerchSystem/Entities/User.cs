@@ -25,6 +25,11 @@ namespace BackendEcommerchSystem.Entities
        public   DateTime CreatedAt { get; set; }  = DateTime.Now;
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiryTime { get; set; }
+
+
+        // Forgot Password
+        public string? ResetPasswordToken { get; set; }
+        public DateTime? ResetPasswordTokenExpiry { get; set; }
         public   ICollection<Order> Orders { get; set; }  = new List<Order>();       
     }
 }

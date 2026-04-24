@@ -2,6 +2,7 @@
 using BackendEcommerchSystem.Interfaces.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Utilities;
 
 namespace BackendEcommerchSystem.Controllers
 {
@@ -126,6 +127,45 @@ namespace BackendEcommerchSystem.Controllers
                 Path = "/"
             });
             return Ok("Logged Out Successfully"); 
+        }
+
+     
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordDTO model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new
+                {
+                    message = "Invalid request data."
+                });
+            }
+
+            var result = await _authService.ForgotPasswordAsync(model.Email);
+
+            if (!result)
+            {
+
+                return Ok(new
+                {
+                    message = "If the email exists, a reset link has been sent."
+                });
+            }
+
+            return Ok(new
+            {
+                message = "If the email exists, a reset link has been sent."
+            });
+        }
+        [HttpPost("resetPassword")] 
+        public async Task<IActionResult> ResetPassword( [FromBody] ResetPaswordDTO model)
+        {
+            var resalt = await _authService.ResetPasswordAsync(model.Email, model.Token, model.NewPassword); 
+            if (!resalt)
+            {
+                return BadRequest("Invalid or expired token!"); 
+            }
+            return Ok("Password reset successfully!"); 
         }
     }
 }

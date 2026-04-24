@@ -14,11 +14,14 @@ namespace BackendEcommerchSystem.Services
     public class AuthService : IAuthService
     {
         private readonly IUserRepository _userRepository; 
-        private readonly IConfiguration _configuration; 
-        public AuthService(IUserRepository userRepository , IConfiguration configuration)
+        private readonly IConfiguration _configuration;
+        private readonly IEmailService _emailService; 
+        
+        public AuthService(IUserRepository userRepository , IConfiguration configuration , IEmailService emailService)
         {
             _userRepository = userRepository;     
-            _configuration = configuration;  
+            _configuration = configuration;
+            _emailService = emailService;  
         }
         public string CreateToken(User user)
         {
@@ -39,15 +42,33 @@ namespace BackendEcommerchSystem.Services
                 signingCredentials: creds
                 );
             return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor); 
+        
         }
 
         public async Task<bool> ForgotPasswordAsync(string emailUser)
         {
-            //var email = await _userRepository.GetByEmailAsync(emailUser); 
-            return true; ;
-
-        }
-
+            var user = await _userRepository.GetByEmailAsync(emailUser);
+          if(user == null)
+            {
+                return false;
+            }
+          var resetToken = Guid.NewGuid().ToString();
+            user.ResetPasswordToken = resetToken;
+            user.ResetPasswordTokenExpiry = DateTime.UtcNow.AddMinutes(15); 
+            await _userRepository.UpdateAsync(user);
+            await _userRepository.SaveChangesAsync();
+            var resetLink = $"http://localhost:3000/reset-password?token={resetToken}&email={emailUser}";
+            await _emailService.SendEmailAsync(emailUser , "Reset Password", $@"
+        <h2>Password Reset Request</h2>
+        <p>You requested to reset your password.</p>
+        <a href='{resetLink}' 
+           style='padding:10px 20px;background:#007bff;color:white;text-decoration:none;border-radius:5px'>
+           Reset Password
+        </a>
+        <p>This link will expire in 15 minutes.</p>
+    ");  
+            return true;    
+           }
         public string GenerateRefrshToken()
         {
             var RandomeNumber = new byte[64]; 
@@ -204,6 +225,30 @@ namespace BackendEcommerchSystem.Services
             };
         }
 
+        public async Task<bool> ResetPasswordAsync(string email, string token, string newPassword)
+        {
+            var user = await _userRepository.GetByEmailAsync(email);
+            if (user == null ||
+        user.ResetPasswordToken != token ||
+        user.ResetPasswordTokenExpiry < DateTime.UtcNow)
+            {
+                return false;   
+            }
+            if (newPassword.Length < 8 ||
+     !newPassword.Any(char.IsUpper) ||
+     !newPassword.Any(char.IsLower) ||
+     !newPassword.Any(char.IsDigit))
+            {
+                return false;
+            }
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
+            user.ResetPasswordToken = null;
+            user.ResetPasswordTokenExpiry = null;  
+            await _userRepository.UpdateAsync(user);
+            await _userRepository.SaveChangesAsync(); 
+            return true;    
+
+        }
     } 
  
 }

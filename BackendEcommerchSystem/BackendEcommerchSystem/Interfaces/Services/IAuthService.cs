@@ -8,7 +8,7 @@ namespace BackendEcommerchSystem.Interfaces.Services
         Task<AuthResponseDTO> LoginAsync(LoginDTO model);
         Task<AuthResponseDTO> RefreshTokenAsync(string token);
         Task LogoutAsync(string refreshToken);
-        Task<bool> ForgotPasswordAsync( string email); 
-
+        Task<bool> ForgotPasswordAsync( string email);
+        Task<bool> ResetPasswordAsync(string email , string token , string newPassword ); 
     }
 }
