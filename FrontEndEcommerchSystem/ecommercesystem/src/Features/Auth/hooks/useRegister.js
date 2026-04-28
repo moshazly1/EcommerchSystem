@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RegisterRequast } from "../Service/authApi";
 import useAuth from "./useAuth";
-import { AuthContext, User } from "../../../Pages/Context/AuthProvider";
+import { AuthContext, User } from "../../../Context/AuthProvider";
 
 export const useRegister = () => {
   const { setAuth } = useContext(AuthContext);

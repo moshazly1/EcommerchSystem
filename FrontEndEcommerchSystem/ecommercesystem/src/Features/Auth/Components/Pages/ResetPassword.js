@@ -1,6 +1,6 @@
 import { Button, Col, Container, Row, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import forgetpassword from "../../../../Assets/ForgetPassword.jpg";
+import ResetYourPassword from "../../../../Assets/ResetYourPassword.jpg";
 import { faLock, faUnlock } from "@fortawesome/free-solid-svg-icons";
 import Loader from "../../../../Components/Loader/Loading";
 import useResetPassword from "../../hooks/useResetPassword";
@@ -128,7 +128,7 @@ export default function ResetPassword() {
               <img
                 className="img-fluid"
                 alt="register-illustration"
-                src={forgetpassword}
+                src={ResetYourPassword}
                 style={{ maxHeight: "600px", objectFit: "cover" }}
               />
             </Col>

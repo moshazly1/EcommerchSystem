@@ -1,0 +1,40 @@
+.nav-link-animated {
+  position: relative;
+  text-decoration: none !important;
+  padding-bottom: 4px;
+  overflow: visible !important;
+  display: inline-block;
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+.nav-link-animated:hover {
+  color: var(--brand-500) !important;
+
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.nav-link-animated::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background-color: var(--brand-500);
+  transition: width 0.3s ease;
+  display: block;
+  border-radius: 999px;
+}
+.nav-link-animated:hover::after {
+  width: 100%;
+}
+
+.nav-link-animated.active::after {
+  width: 100%;
+}
+.search-input:focus {
+  padding-left: 2.2rem !important;
+}
