@@ -3,6 +3,7 @@ using BackendEcommerchSystem.Entities;
 using BackendEcommerchSystem.Enums;
 using BackendEcommerchSystem.Interfaces.Repositories;
 using BackendEcommerchSystem.Interfaces.Services;
+using Org.BouncyCastle.Utilities;
 
 namespace BackendEcommerchSystem.Services
 {
@@ -25,6 +26,7 @@ namespace BackendEcommerchSystem.Services
                 Name = p.Name,
                 Price = p.Price,
                 Stock = p.Stock,
+                Condition = p.Condition,
                 MainImageUrl = p.ProductImages
                  .FirstOrDefault(img => img.ImageType == ProductImageType.Main)?.ImageUrl
                  ?? p.ProductImages.FirstOrDefault()?.ImageUrl
@@ -130,6 +132,86 @@ namespace BackendEcommerchSystem.Services
 
             };
 
+        }
+
+        public async Task<IEnumerable<ProductListDTO>> GetAllLaptop()
+        {
+            var product = await _productRepository.GetAllLaptopAsync();
+
+            var resalt = product.Select(p => new ProductListDTO
+            {
+                Description = p.Description,
+                Id = p.Id,
+                Name = p.Name,
+                Price = p.Price,
+                Stock = p.Stock,
+                Condition = p.Condition,
+                MainImageUrl = p.ProductImages
+                 .FirstOrDefault(img => img.ImageType == ProductImageType.Main)?.ImageUrl
+                 ?? p.ProductImages.FirstOrDefault()?.ImageUrl
+                 ?? ""
+            });
+            return resalt;
+        }
+
+        public  async Task<IEnumerable<ProductListDTO>> GetAllPCs()
+        {
+            var product =  await _productRepository.GetAllPCsAsync();
+
+            var resalt = product.Select(p => new ProductListDTO
+            {
+                Description = p.Description,
+                Id = p.Id,
+                Name = p.Name,
+                Price = p.Price,
+                Stock = p.Stock,
+                Condition = p.Condition,
+                MainImageUrl = p.ProductImages
+                 .FirstOrDefault(img => img.ImageType == ProductImageType.Main)?.ImageUrl
+                 ?? p.ProductImages.FirstOrDefault()?.ImageUrl
+                 ?? ""
+            });
+            return resalt;
+        }
+
+        public async Task<IEnumerable<ProductListDTO>> GetAllMice()
+        {
+            var product = await _productRepository.GetAllMiceAsync();
+
+            var resalt = product.Select(p => new ProductListDTO
+            {
+                Description = p.Description,
+                Id = p.Id,
+                Name = p.Name,
+                Price = p.Price,
+                Stock = p.Stock,
+                Condition = p.Condition,
+                MainImageUrl = p.ProductImages
+                 .FirstOrDefault(img => img.ImageType == ProductImageType.Main)?.ImageUrl
+                 ?? p.ProductImages.FirstOrDefault()?.ImageUrl
+                 ?? ""
+            });
+            return resalt;
+        }
+
+        public async Task<IEnumerable<ProductListDTO>> GetAllAccessories()
+        {
+            var product = await _productRepository.GetAllAccessoriesAsync();
+
+            var resalt = product.Select(p => new ProductListDTO
+            {
+                Description = p.Description,
+                Id = p.Id,
+                Name = p.Name,
+                Price = p.Price,
+                Stock = p.Stock,
+                Condition = p.Condition,
+                MainImageUrl = p.ProductImages
+                 .FirstOrDefault(img => img.ImageType == ProductImageType.Main)?.ImageUrl
+                 ?? p.ProductImages.FirstOrDefault()?.ImageUrl
+                 ?? ""
+            });
+            return resalt;
         }
     }
 }

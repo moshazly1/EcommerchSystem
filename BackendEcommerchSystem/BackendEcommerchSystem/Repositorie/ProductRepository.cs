@@ -58,12 +58,44 @@ namespace BackendEcommerchSystem.Repositorie
         {
             await _appContext.SaveChangesAsync(); 
         }
-
-        public  async Task AddPrductAsync(Product product)
+        public async Task AddPrductAsync(Product product)
         {
-          await _appContext.products.AddAsync(product);
-            await _appContext.SaveChangesAsync(); 
-          
+            await _appContext.products.AddAsync(product);
+            await _appContext.SaveChangesAsync();
+
+        }
+        public async Task<IEnumerable<Product>> GetAllLaptopAsync()
+        {
+            return await _appContext.products.Include(p => p.Brand)
+                .Include(p => p.SubCategory)
+                .Include(p => p.ProductImages)
+                .Where(p => p.CategoryId == 1).ToListAsync();
+        }
+
+
+
+        public async Task<IEnumerable<Product>> GetAllPCsAsync()
+        {
+            return await _appContext.products.Include(p => p.Brand)
+              .Include(p => p.SubCategory)
+              .Include(p => p.ProductImages)
+              .Where(p => p.CategoryId == 2).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Product>> GetAllMiceAsync()
+        {
+            return await _appContext.products.Include(p => p.Brand)
+             .Include(p => p.SubCategory)
+             .Include(p => p.ProductImages)
+             .Where(p => p.CategoryId == 3).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Product>> GetAllAccessoriesAsync()
+        {
+            return await _appContext.products.Include(p => p.Brand)
+             .Include(p => p.SubCategory)
+             .Include(p => p.ProductImages)
+             .Where(p => p.CategoryId == 4).ToListAsync();
         }
     }
 }

@@ -30,7 +30,10 @@ namespace BackendEcommerchSystem.Entities
         public int BrandId { get; set; }     
 
         [ForeignKey("BrandId")]
-        public Brand? Brand { get; set; }     
+        public Brand? Brand { get; set; }
+        public int? CategoryId { get; set; } 
+        [ForeignKey("CategoryId")]
+        public Category? Category { get; set; }
 
         [Required]
         public int SubCategoryId { get; set; }

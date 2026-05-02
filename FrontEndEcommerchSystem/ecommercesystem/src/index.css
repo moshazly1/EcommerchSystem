@@ -11,9 +11,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 :root {
   --brand-100: #fdfdfd;
+  --brand-main: #f9f9f9;
+  --brand-main-2: #ffffff;
+  --brand-main-3: #f3f3f4;
   --brand-200: #006dff14;
   --brand-300: #0000003b;
   --brand-400: #cccccc33;

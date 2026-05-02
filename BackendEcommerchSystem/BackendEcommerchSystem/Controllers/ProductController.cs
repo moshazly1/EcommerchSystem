@@ -42,6 +42,120 @@ namespace BackendEcommerchSystem.Controllers
                 return BadRequest(response);
             }
         }
+        [HttpGet("Laptop")]
+        public async Task<IActionResult> GetAllLaptop()
+        {
+            BaseResponseModel response = new BaseResponseModel();
+            try
+            {
+                var Laptop = await _ProductService.GetAllLaptop();
+                if (!Laptop.Any())
+
+                {
+                    response.Status = false;
+                    response.StatusMessage = "No Laptop found";
+                    return NotFound(response);
+                }
+                response.Status = true;
+                response.StatusMessage = "Laptop retrieved successfully";
+                response.Data = Laptop;
+                return Ok(response);
+
+            }
+            catch
+            {
+                response.Status = false;
+                response.StatusMessage = "something went wrong ";
+                return BadRequest(response);
+            }
+        }
+
+        [HttpGet("PCs")]
+        public async Task<IActionResult> GetAllPCs()
+        {
+            BaseResponseModel response = new BaseResponseModel();
+            try
+            {
+                var PCs = await _ProductService.GetAllPCs();
+                if (!PCs.Any())
+
+                {
+                    response.Status = false;
+                    response.StatusMessage = "No PCs found";
+                    return NotFound(response);
+                }
+                response.Status = true;
+                response.StatusMessage = "PCs retrieved successfully";
+                response.Data = PCs;
+                return Ok(response);
+
+            }
+            catch
+            {
+                response.Status = false;
+                response.StatusMessage = "something went wrong ";
+                return BadRequest(response);
+            }
+        }
+
+
+
+        [HttpGet("Mice")]
+        public async Task<IActionResult> GetAllMice()
+        {
+            BaseResponseModel response = new BaseResponseModel();
+            try
+            {
+                var Mice = await _ProductService.GetAllMice();
+                if (!Mice.Any())
+
+                {
+                    response.Status = false;
+                    response.StatusMessage = "No Mice found";
+                    return NotFound(response);
+                }
+                response.Status = true;
+                response.StatusMessage = "Mice retrieved successfully";
+                response.Data = Mice;
+                return Ok(response);
+
+            }
+            catch
+            {
+                response.Status = false;
+                response.StatusMessage = "something went wrong ";
+                return BadRequest(response);
+            }
+        }
+
+        [HttpGet("Accessories")]
+        public async Task<IActionResult> GetAllAccessories()
+        {
+            BaseResponseModel response = new BaseResponseModel();
+            try
+            {
+                var Accessories = await _ProductService.GetAllAccessories();
+                if (!Accessories.Any())
+
+                {
+                    response.Status = false;
+                    response.StatusMessage = "No Accessories found";
+                    return NotFound(response);
+                }
+                response.Status = true;
+                response.StatusMessage = "Accessories retrieved successfully";
+                response.Data = Accessories;
+                return Ok(response);
+
+            }
+            catch
+            {
+                response.Status = false;
+                response.StatusMessage = "something went wrong ";
+                return BadRequest(response);
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductByID(int id)
         {

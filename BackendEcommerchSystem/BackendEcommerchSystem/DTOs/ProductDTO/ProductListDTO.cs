@@ -1,4 +1,6 @@
-﻿namespace BackendEcommerchSystem.DTOs.ProductDTO
+﻿using BackendEcommerchSystem.Enums;
+
+namespace BackendEcommerchSystem.DTOs.ProductDTO
 {
     public class ProductListDTO
     {
@@ -8,5 +10,6 @@
         public decimal Price { get; set; }
         public int Stock { get; set; }
         public string MainImageUrl { get; set; } = string.Empty;
+        public ProductCondition Condition { get; set; }
     }
 }
