@@ -64,38 +64,61 @@ namespace BackendEcommerchSystem.Repositorie
             await _appContext.SaveChangesAsync();
 
         }
-        public async Task<IEnumerable<Product>> GetAllLaptopAsync()
+        public async Task<(IEnumerable<Product> Products, int TotalCount)> GetAllLaptopAsync(int page, int pageSize)
         {
-            return await _appContext.products.Include(p => p.Brand)
+            var query = _appContext.products
+                .Include(p => p.Brand)
                 .Include(p => p.SubCategory)
                 .Include(p => p.ProductImages)
-                .Where(p => p.CategoryId == 1).ToListAsync();
+                .Where(p => p.CategoryId == 1);
+
+            var totalCount = await query.CountAsync();
+
+            var products = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (products, totalCount);
+        }
+
+        public async Task<(IEnumerable<Product> Products, int TotalCount)> GetAllPCsAsync(int page  ,  int pageSize)
+        {
+                var query = _appContext.products.Include(p => p.Brand)
+               .Include(p => p.SubCategory)
+               .Include(p => p.ProductImages)
+               .Where(p => p.CategoryId == 2);
+               var totalCount = await query.CountAsync();
+               var Products = await query.Skip((page - 1) * pageSize)
+               .Take(pageSize).ToListAsync();
+                return (Products , totalCount);
         }
 
 
-
-        public async Task<IEnumerable<Product>> GetAllPCsAsync()
+        public async Task<(IEnumerable<Product> Products, int TotalCount)> GetAllMiceAsync(int page, int pageSize)
         {
-            return await _appContext.products.Include(p => p.Brand)
+            var query = _appContext.products.Include(p => p.Brand)
               .Include(p => p.SubCategory)
               .Include(p => p.ProductImages)
-              .Where(p => p.CategoryId == 2).ToListAsync();
+              .Where(p => p.CategoryId == 3);
+            var totalCount = await query.CountAsync();
+            var Products = await query.Skip((page - 1) * pageSize)
+            .Take(pageSize).ToListAsync();
+            return (Products, totalCount);
         }
 
-        public async Task<IEnumerable<Product>> GetAllMiceAsync()
-        {
-            return await _appContext.products.Include(p => p.Brand)
-             .Include(p => p.SubCategory)
-             .Include(p => p.ProductImages)
-             .Where(p => p.CategoryId == 3).ToListAsync();
-        }
+      
 
-        public async Task<IEnumerable<Product>> GetAllAccessoriesAsync()
+        async Task<(IEnumerable<Product> Products, int TotalCount)> IProductRepository.GetAllAccessoriesAsync(int page, int pageSize)
         {
-            return await _appContext.products.Include(p => p.Brand)
-             .Include(p => p.SubCategory)
-             .Include(p => p.ProductImages)
-             .Where(p => p.CategoryId == 4).ToListAsync();
+            var query = _appContext.products.Include(p => p.Brand)
+              .Include(p => p.SubCategory)
+              .Include(p => p.ProductImages)
+              .Where(p => p.CategoryId == 2);
+            var totalCount = await query.CountAsync();
+            var Products = await query.Skip((page - 1) * pageSize)
+            .Take(pageSize).ToListAsync();
+            return (Products, totalCount);
         }
     }
 }

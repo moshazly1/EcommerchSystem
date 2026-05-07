@@ -1,8 +1,12 @@
 import { Button, Card } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCartArrowDown,
+  faHeart,
+  faMagnifyingGlass,
+} from "@fortawesome/free-solid-svg-icons";
 import { useWishlist } from "../../Context/WishListContext";
-
+import "./ProductCard.css";
 export default function ProductCard({ item, conditionConfig }) {
   const { wishlist, toggleWishlist } = useWishlist();
 
@@ -94,8 +98,29 @@ export default function ProductCard({ item, conditionConfig }) {
               }}
             />
           </div>
+          {/* استبدل الـ Button القديمة بالكود ده */}
+          <div
+            style={{
+              position: "relative",
+              width: "130px",
+              height: "38px",
+              overflow: "hidden",
+              borderRadius: "6px",
+              cursor: "pointer",
+            }}
+            className="btn-cart-wrapper"
+            onClick={() => {
+              /* Add to cart logic */
+            }}
+          >
+            {/* النص */}
+            <Button className="btn-slide-text">ADD TO CART</Button>
 
-          <Button> ADD TO Cart</Button>
+            {/* أيقونة السلة */}
+            <div className="btn-slide-icon">
+              <FontAwesomeIcon icon={faCartArrowDown} />
+            </div>
+          </div>
         </div>
 
         {/* Stock + Icon (نفس الشكل 100%) */}

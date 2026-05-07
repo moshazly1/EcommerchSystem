@@ -134,15 +134,15 @@ namespace BackendEcommerchSystem.Services
 
         }
 
-        public async Task<IEnumerable<ProductListDTO>> GetAllLaptop()
+        public async Task<PagedResaltDTO<ProductListDTO>> GetAllLaptop(int page, int pageSize)
         {
-            var product = await _productRepository.GetAllLaptopAsync();
+            var (products, totalCount) = await _productRepository.GetAllLaptopAsync(page, pageSize);
 
-            var resalt = product.Select(p => new ProductListDTO
+            var items = products.Select(p => new ProductListDTO
             {
-                Description = p.Description,
                 Id = p.Id,
                 Name = p.Name,
+                Description = p.Description,
                 Price = p.Price,
                 Stock = p.Stock,
                 Condition = p.Condition,
@@ -151,14 +151,24 @@ namespace BackendEcommerchSystem.Services
                  ?? p.ProductImages.FirstOrDefault()?.ImageUrl
                  ?? ""
             });
-            return resalt;
+
+            return new PagedResaltDTO<ProductListDTO>
+            {
+          Items = items, 
+          Page = page,
+          TotalCount = totalCount,
+          PageSize = pageSize   , 
+          TotalPages = (int)Math.Ceiling(totalCount/(double)pageSize)
+    
+            };
+        
         }
 
-        public  async Task<IEnumerable<ProductListDTO>> GetAllPCs()
+        public  async Task<PagedResaltDTO<ProductListDTO>> GetAllPCs(int page, int pageSize)
         {
-            var product =  await _productRepository.GetAllPCsAsync();
+            var (product , totalCount) =  await _productRepository.GetAllPCsAsync(page , pageSize);
 
-            var resalt = product.Select(p => new ProductListDTO
+            var items = product.Select(p => new ProductListDTO
             {
                 Description = p.Description,
                 Id = p.Id,
@@ -171,14 +181,21 @@ namespace BackendEcommerchSystem.Services
                  ?? p.ProductImages.FirstOrDefault()?.ImageUrl
                  ?? ""
             });
-            return resalt;
+            return new PagedResaltDTO<ProductListDTO>
+            {
+                Items = items,           
+                TotalCount = totalCount, 
+                Page = page,            
+                PageSize = pageSize,    
+                TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize) // 21
+            };
         }
 
-        public async Task<IEnumerable<ProductListDTO>> GetAllMice()
+        public async Task<PagedResaltDTO<ProductListDTO>> GetAllMice(int page, int pageSize)
         {
-            var product = await _productRepository.GetAllMiceAsync();
+            var (product , totalCount) = await _productRepository.GetAllMiceAsync(page , pageSize);
 
-            var resalt = product.Select(p => new ProductListDTO
+            var items = product.Select(p => new ProductListDTO
             {
                 Description = p.Description,
                 Id = p.Id,
@@ -191,14 +208,21 @@ namespace BackendEcommerchSystem.Services
                  ?? p.ProductImages.FirstOrDefault()?.ImageUrl
                  ?? ""
             });
-            return resalt;
+            return new PagedResaltDTO<ProductListDTO>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                Page = page,
+                PageSize = pageSize,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize) // 21
+            };
         }
 
-        public async Task<IEnumerable<ProductListDTO>> GetAllAccessories()
+        public async Task<PagedResaltDTO<ProductListDTO>> GetAllAccessories(int page, int pageSize)
         {
-            var product = await _productRepository.GetAllAccessoriesAsync();
+            var (product , totalCount) = await _productRepository.GetAllAccessoriesAsync(page , pageSize);
 
-            var resalt = product.Select(p => new ProductListDTO
+            var items = product.Select(p => new ProductListDTO
             {
                 Description = p.Description,
                 Id = p.Id,
@@ -211,7 +235,15 @@ namespace BackendEcommerchSystem.Services
                  ?? p.ProductImages.FirstOrDefault()?.ImageUrl
                  ?? ""
             });
-            return resalt;
+            return new PagedResaltDTO<ProductListDTO>
+            {
+
+                Items = items,
+                TotalCount = totalCount,
+                Page = page,
+                PageSize = pageSize,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize) // 21
+            }; 
         }
     }
 }

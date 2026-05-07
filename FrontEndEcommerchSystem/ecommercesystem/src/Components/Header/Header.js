@@ -45,7 +45,7 @@ export default function Header() {
                 className="m-2 nav-link-animated"
                 style={({ isActive }) => ({
                   fontWeight: isActive ? "700" : "400",
-                  color: isActive ? "var(--brand-500)" : undefined,
+                  color: isActive ? "var(--brand-500)" : "#6B7280",
                 })}
               >
                 {label}
@@ -74,6 +74,7 @@ export default function Header() {
                 transform: "translateY(-50%)",
                 color: "gray",
                 pointerEvents: "none",
+
                 fontSize: "0.85rem",
                 zIndex: 10,
               }}
@@ -89,7 +90,7 @@ export default function Header() {
                 className="m-2 nav-link-animated"
                 style={({ isActive }) => ({
                   fontWeight: isActive ? "700" : "400",
-                  color: isActive ? "var(--brand-500)" : undefined,
+                  color: isActive ? "var(--brand-500)" : " #6B7280",
                 })}
               >
                 <FontAwesomeIcon className="fs-5 mx-2" icon={faUser} />
@@ -100,7 +101,7 @@ export default function Header() {
                 className="m-2 nav-link-animated"
                 style={({ isActive }) => ({
                   fontWeight: isActive ? "700" : "400",
-                  color: isActive ? "var(--brand-500)" : undefined,
+                  color: isActive ? "var(--brand-500)" : "#6B7280",
                 })}
               >
                 <FontAwesomeIcon className="fs-5" icon={faCartArrowDown} />

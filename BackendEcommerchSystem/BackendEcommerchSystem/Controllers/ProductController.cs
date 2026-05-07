@@ -43,13 +43,13 @@ namespace BackendEcommerchSystem.Controllers
             }
         }
         [HttpGet("Laptop")]
-        public async Task<IActionResult> GetAllLaptop()
+        public async Task<IActionResult> GetAllLaptop(int page=1 , int pageSize = 8)
         {
             BaseResponseModel response = new BaseResponseModel();
             try
             {
-                var Laptop = await _ProductService.GetAllLaptop();
-                if (!Laptop.Any())
+                var Laptop = await _ProductService.GetAllLaptop(page , pageSize);
+                if (!Laptop.Items.Any())
 
                 {
                     response.Status = false;
@@ -71,13 +71,13 @@ namespace BackendEcommerchSystem.Controllers
         }
 
         [HttpGet("PCs")]
-        public async Task<IActionResult> GetAllPCs()
+        public async Task<IActionResult> GetAllPCs(int page = 1, int pageSize = 8)
         {
             BaseResponseModel response = new BaseResponseModel();
             try
             {
-                var PCs = await _ProductService.GetAllPCs();
-                if (!PCs.Any())
+                var PCs = await _ProductService.GetAllPCs(page , pageSize);
+                if (!PCs.Items.Any())
 
                 {
                     response.Status = false;
@@ -101,13 +101,13 @@ namespace BackendEcommerchSystem.Controllers
 
 
         [HttpGet("Mice")]
-        public async Task<IActionResult> GetAllMice()
+        public async Task<IActionResult> GetAllMice(int page = 1, int pageSize = 8)
         {
             BaseResponseModel response = new BaseResponseModel();
             try
             {
-                var Mice = await _ProductService.GetAllMice();
-                if (!Mice.Any())
+                var Mice = await _ProductService.GetAllMice(page ,pageSize);
+                if (!Mice.Items.Any())
 
                 {
                     response.Status = false;
@@ -129,13 +129,13 @@ namespace BackendEcommerchSystem.Controllers
         }
 
         [HttpGet("Accessories")]
-        public async Task<IActionResult> GetAllAccessories()
+        public async Task<IActionResult> GetAllAccessories(int page = 1, int pageSize = 8)
         {
             BaseResponseModel response = new BaseResponseModel();
             try
             {
-                var Accessories = await _ProductService.GetAllAccessories();
-                if (!Accessories.Any())
+                var Accessories = await _ProductService.GetAllAccessories(page ,pageSize);
+                if (!Accessories.Items.Any())
 
                 {
                     response.Status = false;

@@ -155,9 +155,11 @@ import { Col, Row } from "react-bootstrap";
 import Sidebar from "../Components/SiadBar/SideBare";
 import ProductCard from "../Components/cards/ProductCard";
 import { useLaptops } from "../Components/hooks/useLaptops";
+import { useState } from "react";
 
 export default function Laptop() {
-  const { laptops, loading, error } = useLaptops();
+  const [page, setPage] = useState(1);
+  const { laptops, loading, error, totalPages } = useLaptops(page, 8);
 
   const conditionConfig = {
     0: { label: "NEW ARRIVAL", color: "#CC4204" },
@@ -194,6 +196,51 @@ export default function Laptop() {
             </Col>
           ))}
         </Row>
+        <nav className="d-flex justify-content-center mt-4">
+          <ul className="pagination">
+            {/* Previous */}
+            <li className={`page-item ${page === 1 ? "disabled" : ""}`}>
+              <button className="page-link" onClick={() => setPage(page - 1)}>
+                &lt;
+              </button>
+            </li>
+
+            {/* Pages */}
+            {Array.from({ length: totalPages }, (_, i) => i + 1)
+              .filter(
+                (num) =>
+                  num === 1 ||
+                  num === totalPages ||
+                  (num >= page - 1 && num <= page + 1),
+              )
+              .map((num, index, arr) => (
+                <>
+                  {index > 0 && arr[index - 1] !== num - 1 && (
+                    <li key={`dots-${num}`} className="page-item disabled">
+                      <span className="page-link">...</span>
+                    </li>
+                  )}
+                  <li
+                    key={num}
+                    className={`page-item ${page === num ? "active" : ""}`}
+                  >
+                    <button className="page-link" onClick={() => setPage(num)}>
+                      {num}
+                    </button>
+                  </li>
+                </>
+              ))}
+
+            {/* Next */}
+            <li
+              className={`page-item ${page === totalPages ? "disabled" : ""}`}
+            >
+              <button className="page-link" onClick={() => setPage(page + 1)}>
+                &gt;
+              </button>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   );

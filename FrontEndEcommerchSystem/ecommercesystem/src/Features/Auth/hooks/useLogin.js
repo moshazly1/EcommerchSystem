@@ -38,9 +38,11 @@ export const useLogin = () => {
 
         if (res.data.isAuthentication) {
           if (Number(res.data.role) === 1) {
+            navigate("/dashboard");
+          } else if (Number(res.data.role) === 2) {
             navigate("/");
           } else {
-            navigate("/");
+            navigate("/unauthorized");
           }
         }
       }

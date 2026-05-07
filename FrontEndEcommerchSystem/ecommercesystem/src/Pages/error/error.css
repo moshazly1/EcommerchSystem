@@ -1,0 +1,15 @@
+.big-404 {
+  font-size: 300px;
+  font-weight: 900;
+  background: linear-gradient(to bottom, #444, #ddd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+}
+
+.tracking {
+  font-weight: bold;
+  font-size: 80px;
+  position: relative;
+  top: -70px;
+}
