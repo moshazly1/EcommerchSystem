@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.52070145.css",
+    "main.js": "/static/js/main.29e9878f.js",
+    "static/media/imge1.jpeg": "/static/media/imge1.3bff5c9aa546d8128e9a.jpeg",
+    "static/media/ForgetPassword.jpg": "/static/media/ForgetPassword.75751199f18734a558ee.jpg",
+    "static/media/ResetYourPassword.jpg": "/static/media/ResetYourPassword.1e3b0aff15fe1e3a345b.jpg",
+    "static/media/Logo.png": "/static/media/Logo.f7c440715e54f365da9b.png",
+    "index.html": "/index.html",
+    "main.52070145.css.map": "/static/css/main.52070145.css.map",
+    "main.29e9878f.js.map": "/static/js/main.29e9878f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.52070145.css",
+    "static/js/main.29e9878f.js"
+  ]
+}
