@@ -7,9 +7,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useWishlist } from "../../Context/WishListContext";
 import "./ProductCard.css";
+import useCart from "../hooks/useCart";
 export default function ProductCard({ item, conditionConfig }) {
   const { wishlist, toggleWishlist } = useWishlist();
-
+  const { addToCart } = useCart();
   return (
     <Card
       className="h-100 shadow-sm"
@@ -110,7 +111,7 @@ export default function ProductCard({ item, conditionConfig }) {
             }}
             className="btn-cart-wrapper"
             onClick={() => {
-              /* Add to cart logic */
+              addToCart(item.id);
             }}
           >
             {/* النص */}

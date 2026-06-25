@@ -123,7 +123,7 @@ export default function Footer() {
             </div>
           </Col>
         </Row>
-        <div class="border-top my-4 p-3">
+        <div className="border-top my-4 p-3">
           <h6 className="text-center  fs-6" style={{ color: "#6B7280" }}>
             © 2026 Silicon & Silica. All rights reserved. | Credits: Full Stack
             Developer Mohamed El shazly & UI/UX Designer Mazen Mohamed.

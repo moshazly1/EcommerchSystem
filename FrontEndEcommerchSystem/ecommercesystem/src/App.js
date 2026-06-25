@@ -43,7 +43,6 @@ export default function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<Register />} />
 
-        <Route path="/Laptop" element={<Laptop />} />
         <Route path="/PCs" element={<PCs />} />
         <Route path="/Mice" element={<Mice />} />
         <Route path="/Accessories" element={<Accessoriers />} />
@@ -54,6 +53,7 @@ export default function App() {
 
         {/* ================= PROTECTED ROUTES ================= */}
         <Route element={<PersistLogin />}>
+          <Route path="/Laptop" element={<Laptop />} />
           {/* ===== USER + ADMIN ===== */}
           <Route
             element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin]} />}

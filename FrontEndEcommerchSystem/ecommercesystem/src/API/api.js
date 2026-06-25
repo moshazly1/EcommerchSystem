@@ -14,7 +14,10 @@ export const LAPTOP = "api/Product/Laptop";
 export const PCS = "api/Product/PCs";
 export const MICE = "api/Product/Mice";
 export const ACCESSORIES = "api/Product/Accessories";
-
+export const CARTITEM = "api/Cart/items";
+export const CART = "api/Cart";
+export const DELETITEMSCART = "api/Cart/items";
+export const UPDATECART = "api/Cart/items";
 export const axiosPrivate = axios.create({
   baseURL: basURL,
   headers: { "Content-Type": "application/json" },

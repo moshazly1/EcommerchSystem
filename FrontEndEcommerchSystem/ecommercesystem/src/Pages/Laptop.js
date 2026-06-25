@@ -155,7 +155,7 @@ import { Col, Row } from "react-bootstrap";
 import Sidebar from "../Components/SiadBar/SideBare";
 import ProductCard from "../Components/cards/ProductCard";
 import { useLaptops } from "../Components/hooks/useLaptops";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 
 export default function Laptop() {
   const [page, setPage] = useState(1);
@@ -214,7 +214,7 @@ export default function Laptop() {
                   (num >= page - 1 && num <= page + 1),
               )
               .map((num, index, arr) => (
-                <>
+                <Fragment key={`fragment-${num}`}>
                   {index > 0 && arr[index - 1] !== num - 1 && (
                     <li key={`dots-${num}`} className="page-item disabled">
                       <span className="page-link">...</span>
@@ -228,7 +228,7 @@ export default function Laptop() {
                       {num}
                     </button>
                   </li>
-                </>
+                </Fragment>
               ))}
 
             {/* Next */}

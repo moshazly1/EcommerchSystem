@@ -27,16 +27,18 @@ namespace BackendEcommerchSystem.Data
             }); 
         }
         public DbSet<Brand> Brands { get; set; }
-
         public DbSet<User> users { get; set; }  
         public DbSet<Category> categories { get; set; } 
        public DbSet<SubCategory> subcategories { get; set; }        
         public DbSet<Product> products { get;   set; }  
-        
         public DbSet<Order> orders { get; set; }    
         public DbSet<ProductImage> ProductImages { get; set; }          
          public DbSet<Brand> rands { get; set; }        
-        public DbSet<OrderItem> OrderItems { get; set; }        
+        public DbSet<OrderItem> OrderItems { get; set; }     
+        public DbSet<Cart> Carts { get; set; } 
+        public DbSet<CartItem> CartItems { get; set; }   
+        
+  
     }
 }
 

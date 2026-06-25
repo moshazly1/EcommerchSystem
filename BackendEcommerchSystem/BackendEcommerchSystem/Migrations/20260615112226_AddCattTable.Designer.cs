@@ -4,6 +4,7 @@ using BackendEcommerchSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackendEcommerchSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260615112226_AddCattTable")]
+    partial class AddCattTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -326,11 +329,11 @@ namespace BackendEcommerchSystem.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2026, 6, 18, 11, 18, 50, 987, DateTimeKind.Local).AddTicks(3146),
+                            CreatedAt = new DateTime(2026, 6, 15, 14, 22, 24, 641, DateTimeKind.Local).AddTicks(8059),
                             Email = "admin@myshop.com",
                             FullName = "System Admin",
                             IsAcive = true,
-                            PasswordHash = "$2a$11$yDvv6Dvhjc5nkjC21/hzXOlMwyPrrx7cP32ybjGPnSX0jrWDtN9jG",
+                            PasswordHash = "$2a$11$47zhttMl2TvABBtfSM1qG.oNk0tjjOv5Z08/x4WRYf.cMCCqcS5EK",
                             Role = 1
                         });
                 });
