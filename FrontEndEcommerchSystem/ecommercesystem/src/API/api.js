@@ -6,6 +6,7 @@ export const LOGIN = "api/Auth/Login";
 export const REGISTER = "api/Auth/register";
 export const REFRESHTOKEN = "api/Auth/refreshToken";
 export const USER = "api/User";
+export const USERID = "api/User";
 export const LOGOUT = "api/Auth/logout";
 export const FORGETPASSWORD = "api/Auth/forgot-password";
 export const RESETPASSWORD = "api/Auth/resetPassword";
@@ -18,6 +19,7 @@ export const CARTITEM = "api/Cart/items";
 export const CART = "api/Cart";
 export const DELETITEMSCART = "api/Cart/items";
 export const UPDATECART = "api/Cart/items";
+
 export const axiosPrivate = axios.create({
   baseURL: basURL,
   headers: { "Content-Type": "application/json" },

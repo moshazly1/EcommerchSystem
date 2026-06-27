@@ -59,6 +59,7 @@ export default function App() {
             element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin]} />}
           >
             <Route path="/Profile" element={<Profile />} />
+
             <Route path="/Card" element={<Card />} />
           </Route>
 

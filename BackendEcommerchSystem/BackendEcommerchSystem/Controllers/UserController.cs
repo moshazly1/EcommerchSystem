@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BackendEcommerchSystem.Controllers
 {
-    [Authorize(Roles = "Admin")]
+
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -20,6 +20,7 @@ namespace BackendEcommerchSystem.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllUser()
         {
             BaseResponseModel response = new BaseResponseModel();
@@ -48,6 +49,7 @@ namespace BackendEcommerchSystem.Controllers
 
 
         [HttpGet("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> GetUserById(int id)
         {
             BaseResponseModel response = new BaseResponseModel();
@@ -75,6 +77,7 @@ namespace BackendEcommerchSystem.Controllers
 
 
         [HttpGet("by-email/{email}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetUserByEmail(string email)
         {
             BaseResponseModel response = new BaseResponseModel();
@@ -123,8 +126,9 @@ namespace BackendEcommerchSystem.Controllers
                 return StatusCode(500, response);
             }
         }
-
+  
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteUser(int id)
         {
             BaseResponseModel response = new BaseResponseModel();
