@@ -90,10 +90,10 @@ namespace BackendEcommerchSystem.Controllers
                 return Ok(response);
 
             }
-            catch
+            catch (Exception ex)
             {
                 response.Status = false;
-                response.StatusMessage = "something went wrong ";
+                response.StatusMessage = ex.ToString();
                 return BadRequest(response);
             }
         }

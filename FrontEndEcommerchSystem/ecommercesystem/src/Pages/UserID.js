@@ -4,7 +4,7 @@ import useAuth from "../Features/Auth/hooks/useAuth";
 import { Col, Card as CartPro, Container, Row } from "react-bootstrap";
 import ImageProfile from "../Assets/2e648c43715eea402bd007e4e700afba0b609986.jpg";
 import Card from "./Card";
-export default function UserID() {
+export default function UserID({ stats }) {
   const { auth } = useAuth();
 
   const EmailUser = auth.user.email;
@@ -34,8 +34,7 @@ export default function UserID() {
             </div>
           </Col>
           <Col className="d-flex align-items-center justify-content-center">
-            <CartPro className="px-4 py-2 m-3 border-0">
-              {" "}
+            {/* <CartPro className="px-4 py-2 m-3 border-0">
               <p className="text-secondary fw-bold">Total Builds</p>
               <h2 className="fw-bold">12</h2>
             </CartPro>
@@ -44,7 +43,8 @@ export default function UserID() {
               <h2 style={{ color: "var(  --brand-700)" }} className="fw-bold ">
                 02
               </h2>
-            </CartPro>
+            </CartPro> */}
+            {stats}
           </Col>
         </Row>
       </div>

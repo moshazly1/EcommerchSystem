@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37411.7
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTesting", "UnitTesting\UnitTesting.csproj", "{33373BF1-1119-42D3-B7BE-BBCF63C83EDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SW.Payroll", "SW.Payroll\SW.Payroll.csproj", "{04E0771F-0B7D-41D9-8F0B-BD5EDFCE7F5C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{33373BF1-1119-42D3-B7BE-BBCF63C83EDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33373BF1-1119-42D3-B7BE-BBCF63C83EDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33373BF1-1119-42D3-B7BE-BBCF63C83EDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33373BF1-1119-42D3-B7BE-BBCF63C83EDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04E0771F-0B7D-41D9-8F0B-BD5EDFCE7F5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04E0771F-0B7D-41D9-8F0B-BD5EDFCE7F5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04E0771F-0B7D-41D9-8F0B-BD5EDFCE7F5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04E0771F-0B7D-41D9-8F0B-BD5EDFCE7F5C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4DE1D7E0-C06B-432E-B5D3-676A0566C620}
+	EndGlobalSection
+EndGlobal

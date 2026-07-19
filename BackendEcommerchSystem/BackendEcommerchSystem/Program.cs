@@ -21,8 +21,7 @@ namespace BackendEcommerchSystem
             builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("Connection"))
             );
-           
-          
+
             builder.Services.AddScoped<IUserRepository, UserReposutory>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -36,8 +35,11 @@ namespace BackendEcommerchSystem
             builder.Services.AddScoped<IUserServises, UserService>();
             builder.Services.AddScoped<IEmailService , EmailService>();
             builder.Services.AddScoped<ICartRepository, CartRepository>();
-            builder.Services.AddScoped<ICartService, CartService>(); 
-
+            builder.Services.AddScoped<ICartService, CartService>();
+            builder.Services.AddScoped<IWhiteListReposatory, whiteListReposatory>();
+            builder.Services.AddScoped<IWhiteListServices, WhiteListService>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+            builder.Services.AddScoped<IOrderServices, OrderServices>(); 
             builder.Services.AddControllers();
             builder.Services.AddAuthentication(opthion =>
           

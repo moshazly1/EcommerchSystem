@@ -19,7 +19,9 @@ export const CARTITEM = "api/Cart/items";
 export const CART = "api/Cart";
 export const DELETITEMSCART = "api/Cart/items";
 export const UPDATECART = "api/Cart/items";
-
+export const ADDWHITELIST = "api/WhiteList/AddWhiteList";
+export const REMOVEWHITELIST = "api/WhiteList/Remove";
+export const GETALLWL = "api/WhiteList/WhiteList";
 export const axiosPrivate = axios.create({
   baseURL: basURL,
   headers: { "Content-Type": "application/json" },

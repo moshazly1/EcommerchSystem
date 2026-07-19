@@ -3,7 +3,7 @@
     public class CreateOrderDTO
     {
         public int UserId { get; set; }     
-        public List<CreateOrderItemDTO> items { get; set; } 
+        public List<CreateOrderItemsDTO> items { get; set; } 
 
         public string ShippingAddress { get; set; }     
 

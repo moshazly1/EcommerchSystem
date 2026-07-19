@@ -7,11 +7,11 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Fragment, useState } from "react";
 import useCartItems from "../Components/hooks/useCartItems";
-
+import { useNavigate } from "react-router-dom";
 export default function Card() {
   const { Cart, error, loding, DeleteItemsCard, Update } = useCartItems();
   const [promoCode, setPromoCode] = useState("");
-
+  const navigate = useNavigate();
   if (loding) return <p>Loading...</p>;
   if (!Cart) return <p>Cart is empty</p>;
 
@@ -160,6 +160,7 @@ export default function Card() {
                 <button
                   className="btn w-100 mt-3 text-white"
                   style={{ backgroundColor: "var(--brand-700)" }}
+                  onClick={() => navigate("/checkout")}
                 >
                   PROCEED TO CHECKOUT
                 </button>

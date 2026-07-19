@@ -326,13 +326,39 @@ namespace BackendEcommerchSystem.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2026, 6, 18, 11, 18, 50, 987, DateTimeKind.Local).AddTicks(3146),
+                            CreatedAt = new DateTime(2026, 7, 4, 10, 50, 30, 628, DateTimeKind.Local).AddTicks(4515),
                             Email = "admin@myshop.com",
                             FullName = "System Admin",
                             IsAcive = true,
-                            PasswordHash = "$2a$11$yDvv6Dvhjc5nkjC21/hzXOlMwyPrrx7cP32ybjGPnSX0jrWDtN9jG",
+                            PasswordHash = "$2a$11$a1YQ/osp5WiqS6vMMJ3bZOXVHFPyx2QIZhHvDt8V15VrtMR8L4UVC",
                             Role = 1
                         });
+                });
+
+            modelBuilder.Entity("BackendEcommerchSystem.Entities.whiteList", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("WhiteLists");
                 });
 
             modelBuilder.Entity("BackendEcommerchSystem.Entities.Cart", b =>
@@ -442,6 +468,25 @@ namespace BackendEcommerchSystem.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("BackendEcommerchSystem.Entities.whiteList", b =>
+                {
+                    b.HasOne("BackendEcommerchSystem.Entities.Product", "Product")
+                        .WithMany("WishLists")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BackendEcommerchSystem.Entities.User", "User")
+                        .WithMany("WishList")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("BackendEcommerchSystem.Entities.Brand", b =>
                 {
                     b.Navigation("Products");
@@ -467,6 +512,8 @@ namespace BackendEcommerchSystem.Migrations
                     b.Navigation("OrderItems");
 
                     b.Navigation("ProductImages");
+
+                    b.Navigation("WishLists");
                 });
 
             modelBuilder.Entity("BackendEcommerchSystem.Entities.SubCategory", b =>
@@ -477,6 +524,8 @@ namespace BackendEcommerchSystem.Migrations
             modelBuilder.Entity("BackendEcommerchSystem.Entities.User", b =>
                 {
                     b.Navigation("Orders");
+
+                    b.Navigation("WishList");
                 });
 #pragma warning restore 612, 618
         }

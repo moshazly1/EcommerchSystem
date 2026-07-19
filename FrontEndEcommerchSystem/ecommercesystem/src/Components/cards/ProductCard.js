@@ -8,9 +8,17 @@ import {
 import { useWishlist } from "../../Context/WishListContext";
 import "./ProductCard.css";
 import useCart from "../hooks/useCart";
-export default function ProductCard({ item, conditionConfig }) {
+import useWishlistApi from "../hooks/useWishlistApi";
+export default function ProductCard({
+  item,
+  conditionConfig,
+  forceWishlisted = false,
+}) {
   const { wishlist, toggleWishlist } = useWishlist();
   const { addToCart } = useCart();
+  const { addtoWhiteList, RemoveWhiteList } = useWishlistApi();
+
+  const isWishlisted = forceWishlisted || wishlist.includes(item.id);
   return (
     <Card
       className="h-100 shadow-sm"
@@ -90,12 +98,24 @@ export default function ProductCard({ item, conditionConfig }) {
           <div
             className="p-2 border rounded"
             style={{ cursor: "pointer" }}
-            onClick={() => toggleWishlist(item.id)}
+            onClick={async () => {
+              const isWishlisted = wishlist.includes(item.id);
+              try {
+                if (isWishlisted) {
+                  await RemoveWhiteList(item.id);
+                } else {
+                  await addtoWhiteList(item.id);
+                }
+                toggleWishlist(item.id);
+              } catch (error) {
+                console.log("Failed to update wishlist:", error);
+              }
+            }}
           >
             <FontAwesomeIcon
               icon={faHeart}
               style={{
-                color: wishlist.includes(item.id) ? "red" : "#ccc",
+                color: isWishlisted ? "red" : "#ccc",
               }}
             />
           </div>

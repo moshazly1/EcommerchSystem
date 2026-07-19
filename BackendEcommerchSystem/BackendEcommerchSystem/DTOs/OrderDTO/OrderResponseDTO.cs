@@ -1,4 +1,6 @@
-﻿namespace BackendEcommerchSystem.DTOs.OrderDTO
+﻿using BackendEcommerchSystem.Enums;
+
+namespace BackendEcommerchSystem.DTOs.OrderDTO
 {
     public class OrderResponseDTO
     {
@@ -6,7 +8,7 @@
 
         public DateTime OrderDate { get; set; }
 
-        public string Status { get; set; }
+        public OrderStatus Status { get; set; }
 
         public decimal TotalAmount { get; set; }
 

@@ -15,7 +15,7 @@ const NAV_LINKS = [
   { label: "PCs", to: "/PCs" },
   { label: "Mice", to: "/Mice" },
   { label: "Accessories", to: "/Accessories" },
-  { label: "Support", to: "/Support" },
+  // { label: "Support", to: "/Support" },
 ];
 
 export default function Header() {

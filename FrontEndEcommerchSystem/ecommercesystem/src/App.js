@@ -27,6 +27,10 @@ import PersistLogin from "./Features/Auth/hooks/PersistLogin";
 // Error Pages
 import NotFound from "./Pages/error/NotFont";
 import UnAuthorized from "./Pages/error/unauthorized";
+import WhitsList from "./Pages/DashBoardProfile/WhitsList";
+import Setting from "./Pages/DashBoardProfile/Setting";
+import Orders from "./Pages/DashBoardProfile/Orders";
+import CheckOut from "./Pages/CheckOut";
 
 const ROLES = {
   Admin: 1,
@@ -58,8 +62,13 @@ export default function App() {
           <Route
             element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin]} />}
           >
-            <Route path="/Profile" element={<Profile />} />
-
+            <Route path="/Profile" element={<Profile />}>
+              <Route index element={<Orders />} />
+              <Route path="wishlist" element={<WhitsList />} />
+              <Route path="setting" element={<Setting />} />
+              <Route path="support" element={<Supports />} />
+            </Route>
+            <Route path="checkout" element={<CheckOut />} />
             <Route path="/Card" element={<Card />} />
           </Route>
 

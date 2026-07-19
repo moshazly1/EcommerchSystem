@@ -47,6 +47,8 @@ namespace BackendEcommerchSystem.Entities
 
         public ICollection<ProductImage> ProductImages { get; set; } = new List<ProductImage>();
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+
+        public ICollection<WhiteList> WishLists { get; set; } = new List<WhiteList>();
     }
 
 }

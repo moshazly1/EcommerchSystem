@@ -30,6 +30,8 @@ namespace BackendEcommerchSystem.Entities
         // Forgot Password
         public string? ResetPasswordToken { get; set; }
         public DateTime? ResetPasswordTokenExpiry { get; set; }
-        public   ICollection<Order> Orders { get; set; }  = new List<Order>();       
+        public   ICollection<Order> Orders { get; set; }  = new List<Order>();
+        public ICollection<WhiteList> WishList { get; set; } = new List<WhiteList>(); 
+    
     }
 }
