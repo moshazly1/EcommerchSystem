@@ -156,10 +156,14 @@ export default function Card() {
                   </span>
                   <h1 className="fw-bold">${Cart.total}</h1>
                 </div>
-
                 <button
-                  className="btn w-100 mt-3 text-white"
-                  style={{ backgroundColor: "var(--brand-700)" }}
+                  className="btn w-100 text-white mt-3"
+                  style={{
+                    backgroundColor:
+                      Cart.items?.length > 0 ? "var(--brand-700)" : "#bdbdbd",
+                    cursor: Cart.items?.length > 0 ? "pointer" : "not-allowed",
+                  }}
+                  disabled={!Cart.items || Cart.items.length === 0}
                   onClick={() => navigate("/checkout")}
                 >
                   PROCEED TO CHECKOUT

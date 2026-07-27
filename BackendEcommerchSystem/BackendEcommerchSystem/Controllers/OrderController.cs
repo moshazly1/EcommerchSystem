@@ -20,21 +20,21 @@ namespace BackendEcommerchSystem.Controllers
 
         // POST /api/order
         [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDTO dto)
         {
             try
             {
                 var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
                 dto.UserId = userId;
-                await _orderServices.CreateOrderAsync(dto);
-                return StatusCode(201, "Order created successfully");
+                var orderId = await _orderServices.CreateOrderAsync(dto);
+                return StatusCode(201, new { orderId = orderId }); // ✅ رجّع الـ orderId
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-
         // GET /api/order/my-orders
         [HttpGet("my-orders")]
         public async Task<IActionResult> GetMyOrders()

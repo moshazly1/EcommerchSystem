@@ -22,6 +22,9 @@ export const UPDATECART = "api/Cart/items";
 export const ADDWHITELIST = "api/WhiteList/AddWhiteList";
 export const REMOVEWHITELIST = "api/WhiteList/Remove";
 export const GETALLWL = "api/WhiteList/WhiteList";
+export const PAYMENT = "api/Payment/create-payment-intent";
+export const ADDORDER = "api/Order";
+export const SHOWORDER = "api/Order/my-orders";
 export const axiosPrivate = axios.create({
   baseURL: basURL,
   headers: { "Content-Type": "application/json" },

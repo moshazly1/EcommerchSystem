@@ -7,13 +7,20 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import Authprovider from "./Context/AuthProvider";
 import { WishlistProvider } from "./Context/WishListContext";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+const stripePromise = loadStripe(
+  "pk_test_51TvrpYAWXc2AsGLay9m4bpFtkr6jqRzRrQmAHCCkxVyb8B92iKNIHAuj1t1SLWXdzJGayzU3Q7xLN4nztfmlh21Z00YGCWlZhk",
+);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Authprovider>
         <WishlistProvider>
-          <App />
+          <Elements stripe={stripePromise}>
+            <App />
+          </Elements>
         </WishlistProvider>
       </Authprovider>
     </BrowserRouter>

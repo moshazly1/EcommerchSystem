@@ -21,14 +21,13 @@ namespace BackendEcommerchSystem.Services
             _productRepository = productRepository;
         }
 
-        public async Task CreateOrderAsync(CreateOrderDTO dto)
+        public async Task<int> CreateOrderAsync(CreateOrderDTO dto)
         {
-            // 1. جيب الـ Cart
+            // نفس الكود
             var cart = await _cartRepository.GetCartByUserIdAsync(dto.UserId);
             if (cart == null || !cart.CartItems.Any())
                 throw new Exception("Cart is empty");
 
-            // 2. اعمل Order
             var order = new Order
             {
                 CustomerId = dto.UserId,
@@ -37,7 +36,6 @@ namespace BackendEcommerchSystem.Services
                 Status = Enums.OrderStatus.Pending
             };
 
-            // 3. حول CartItems لـ OrderItems
             order.OrderItems = cart.CartItems.Select(i => new OrderItem
             {
                 ProductId = i.ProductId,
@@ -45,7 +43,6 @@ namespace BackendEcommerchSystem.Services
                 Price = i.UnitPrice
             }).ToList();
 
-            // 4. قلل الـ Stock لكل منتج
             foreach (var item in cart.CartItems)
             {
                 var product = await _productRepository.GetByIdProductAsync(item.ProductId);
@@ -55,17 +52,16 @@ namespace BackendEcommerchSystem.Services
                 await _productRepository.UpdateProduct(product.Id, product);
             }
 
-            // 5. احفظ الـ Order
             await _OrderReposatory.AddOrder(order);
 
-            // 6. امسح الـ Cart
             foreach (var item in cart.CartItems.ToList())
             {
                 await _cartRepository.RemoveCartItemAsync(item);
             }
             await _cartRepository.SaveChangesAsync();
-        }
 
+            return order.Id; // ✅ رجّع الـ ID
+        }
         // باقي الـ methods زي ما هي
         public async Task<OrderResponseDTO> GetOrderById(int orderId)
         {

@@ -7,6 +7,7 @@ using BackendEcommerchSystem.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Stripe;
 using System.Text;
 
 namespace BackendEcommerchSystem
@@ -76,7 +77,7 @@ namespace BackendEcommerchSystem
                               .AllowCredentials());
             });
 
-           
+            StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
