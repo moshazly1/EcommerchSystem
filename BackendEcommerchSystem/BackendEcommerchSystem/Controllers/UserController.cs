@@ -1,10 +1,13 @@
 ﻿using Azure;
+using BackendEcommerchSystem.DTOs.AddNoteficationDTO;
 using BackendEcommerchSystem.DTOs.UserDTO;
 using BackendEcommerchSystem.Interfaces.Services;
 using BackendEcommerchSystem.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Bcpg;
+using System.Security.Claims;
 
 namespace BackendEcommerchSystem.Controllers
 {
@@ -48,14 +51,15 @@ namespace BackendEcommerchSystem.Controllers
         }
 
 
-        [HttpGet("{id:int}")]
+        [HttpGet("me")]
         [Authorize]
-        public async Task<IActionResult> GetUserById(int id)
+        public async Task<IActionResult> GetUserById()
         {
             BaseResponseModel response = new BaseResponseModel();
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             try
             {
-                var user = await _userServises.GetByIDAsync(id);
+                var user = await _userServises.GetByIDAsync(userId);
                 if (user == null)
                 {
                     response.Status = false;
@@ -134,7 +138,7 @@ namespace BackendEcommerchSystem.Controllers
             BaseResponseModel response = new BaseResponseModel();
             try
             {
-                await _userServises.DeleteUserAsync(id);
+                await _userServises.DeleteUser(id);
 
                 response.Status = true;
                 response.StatusMessage = "User deleted successfully.";
@@ -147,6 +151,27 @@ namespace BackendEcommerchSystem.Controllers
                 return StatusCode(500, response);
             }
         }
-
+        [HttpPut("UpdateUser")]
+        [Authorize] 
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDTO update  )
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value); 
+        await _userServises.UpdateUser(userId, update);
+            var baseResponseModel = new BaseResponseModel
+            {
+                Status = true,
+                StatusMessage = "User updated successfully.",
+                Data = null
+            };
+            return Ok(baseResponseModel); 
+        }
+        [HttpPut("email-digest")]
+        [Authorize]
+        public async Task<IActionResult> UpdateEmailDigest(UpdateEmailDigestDto dto)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            await _userServises.UpdateEmailDigestAsync(userId , dto.EmailDigest);
+            return Ok("User Update Notification"); 
+        }
     }
 }

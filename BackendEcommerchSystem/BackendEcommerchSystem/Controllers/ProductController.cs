@@ -237,6 +237,7 @@ namespace BackendEcommerchSystem.Controllers
             }
 
         }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id) { 
         BaseResponseModel response = new BaseResponseModel () ;  

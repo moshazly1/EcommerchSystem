@@ -9,6 +9,9 @@ namespace BackendEcommerchSystem.Interfaces.Services
         Task<UserDTO> GetByIDAsync(int id);
         Task<UserDTO> GetByEmailAsync(   string email);
         Task AddUserAsync(CreateUserDTO userDTO);
-        Task DeleteUserAsync(int id);
+        Task UpdateUser(int id, UpdateUserDTO update);
+        Task DeleteUser(int id);
+
+        Task UpdateEmailDigestAsync(int userId , bool emailDigest); 
     }
 }

@@ -1,4 +1,4 @@
-import { Button, Container, Form, Nav, Navbar } from "react-bootstrap";
+import { Badge, Button, Container, Form, Nav, Navbar } from "react-bootstrap";
 import Logo from "../../Assets/Logo.png";
 import {
   faCartArrowDown,
@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, NavLink } from "react-router-dom";
 import useAuth from "../../Features/Auth/hooks/useAuth";
 import "./Header.css";
-
+import useCart from "../hooks/useCart";
 const NAV_LINKS = [
   { label: "Laptops", to: "/Laptop" },
   { label: "PCs", to: "/PCs" },
@@ -20,8 +20,9 @@ const NAV_LINKS = [
 
 export default function Header() {
   const { auth } = useAuth();
+  const { cartCount } = useCart();
   const isLoggedIn = !!auth?.accessToken;
-
+  console.log(cartCount);
   return (
     <Navbar expand="lg" className="bg-body-tertiary shadow-sm sticky-top">
       <Container>
@@ -74,7 +75,6 @@ export default function Header() {
                 transform: "translateY(-50%)",
                 color: "gray",
                 pointerEvents: "none",
-
                 fontSize: "0.85rem",
                 zIndex: 10,
               }}
@@ -98,13 +98,22 @@ export default function Header() {
               <Nav.Link
                 as={NavLink}
                 to="/Card"
-                className="m-2 nav-link-animated"
+                className="m-2 nav-link-animated position-relative"
                 style={({ isActive }) => ({
                   fontWeight: isActive ? "700" : "400",
                   color: isActive ? "var(--brand-500)" : "#6B7280",
                 })}
               >
                 <FontAwesomeIcon className="fs-5" icon={faCartArrowDown} />
+                {cartCount > 0 && (
+                  <Badge
+                    pill
+                    bg="danger"
+                    className="position-absolute top-0 start-100 translate-middle"
+                  >
+                    {cartCount}
+                  </Badge>
+                )}
               </Nav.Link>
             </div>
           ) : (

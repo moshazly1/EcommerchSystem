@@ -16,6 +16,8 @@ namespace BackendEcommerchSystem.Entities
         [EmailAddress]
         public string Email { get; set; } = string.Empty;
 
+        public string? PhoneNumber { get; set; }
+
         [Required]
         public string PasswordHash { get; set; } = string.Empty; 
         [Required]
@@ -25,8 +27,9 @@ namespace BackendEcommerchSystem.Entities
        public   DateTime CreatedAt { get; set; }  = DateTime.Now;
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiryTime { get; set; }
-
-
+        public bool EmailDigest { get; set; } = true; 
+        public bool  SmsUpdates { get; set; } = true;           
+        public bool AccountActivity { get; set; } = true;       
         // Forgot Password
         public string? ResetPasswordToken { get; set; }
         public DateTime? ResetPasswordTokenExpiry { get; set; }

@@ -120,5 +120,12 @@ namespace BackendEcommerchSystem.Repositorie
             .Take(pageSize).ToListAsync();
             return (Products, totalCount);
         }
+
+        public async Task<IEnumerable<Product>> GetProductsAddedLastWeekAsync()
+        {
+            var lastWeek = DateTime.Now.AddDays(-7);
+            var lastProduct = await _appContext.products.Where(p => p.CreatedAt > lastWeek).ToListAsync();
+            return lastProduct;     
+        }
     }
 }

@@ -25,7 +25,6 @@ export default function PCs(p) {
         className="p-5 flex-grow-1"
         style={{ backgroundColor: "var(--brand-main)" }}
       >
-        {/* 🔥 نفس الشكل القديم */}
         <h1>PCs</h1>
         <p className="text-secondary pb-4">
           Curated engineering marvels for professionals who demand precision.

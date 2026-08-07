@@ -9,7 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Stripe;
 using System.Text;
-
+using Hangfire;
+using Hangfire.SqlServer; 
 namespace BackendEcommerchSystem
 {
     public class Program
@@ -40,7 +41,8 @@ namespace BackendEcommerchSystem
             builder.Services.AddScoped<IWhiteListReposatory, whiteListReposatory>();
             builder.Services.AddScoped<IWhiteListServices, WhiteListService>();
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-            builder.Services.AddScoped<IOrderServices, OrderServices>(); 
+            builder.Services.AddScoped<IOrderServices, OrderServices>();
+            builder.Services.AddScoped<INotificationService , NotificationService>();
             builder.Services.AddControllers();
             builder.Services.AddAuthentication(opthion =>
           
@@ -63,10 +65,12 @@ namespace BackendEcommerchSystem
                 }; 
 
             }
-         
-
             );
-         
+            builder.Services.AddHangfire( config =>  {
+                config.UseSqlServerStorage(builder.Configuration.GetConnectionString("Connection")); 
+            }) ;
+            builder.Services.AddHangfireServer(); 
+
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowFrontend",
@@ -90,13 +94,18 @@ namespace BackendEcommerchSystem
             //{
                 app.UseSwagger();
                 app.UseSwaggerUI();
+            app.UseHangfireDashboard(); 
             //}
             app.UseCors("AllowFrontend");
             //app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
-          
 
+            RecurringJob.AddOrUpdate<INotificationService>(
+                "WeeklyProducts" ,
+                x=>x.SendEmailDigestAsync() , 
+                Cron.Weekly(DayOfWeek.Friday , 9) 
+                ); 
             app.MapControllers();
 
             app.Run();

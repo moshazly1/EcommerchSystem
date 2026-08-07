@@ -4,6 +4,7 @@ using BackendEcommerchSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackendEcommerchSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260804134043_newnotifaction")]
+    partial class newnotifaction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -280,9 +283,6 @@ namespace BackendEcommerchSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("AccountActivity")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -324,9 +324,6 @@ namespace BackendEcommerchSystem.Migrations
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
-                    b.Property<bool>("SmsUpdates")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
@@ -338,15 +335,13 @@ namespace BackendEcommerchSystem.Migrations
                         new
                         {
                             Id = 5,
-                            AccountActivity = true,
-                            CreatedAt = new DateTime(2026, 8, 5, 10, 26, 47, 246, DateTimeKind.Local).AddTicks(3031),
+                            CreatedAt = new DateTime(2026, 8, 4, 16, 40, 41, 139, DateTimeKind.Local).AddTicks(9035),
                             Email = "admin@myshop.com",
                             EmailDigest = true,
                             FullName = "System Admin",
                             IsAcive = true,
-                            PasswordHash = "$2a$11$swlA7RxAKxZWSyWzvtwPUuf5iRZNzDl/jsHSI1xbpNbySxLoUQ3zC",
-                            Role = 1,
-                            SmsUpdates = true
+                            PasswordHash = "$2a$11$CF7TE0cfx7kcWn.Lrsm9c.0wlZ3qIr6U9Dj6KnL7PvCs/dWHZ4Fc.",
+                            Role = 1
                         });
                 });
 

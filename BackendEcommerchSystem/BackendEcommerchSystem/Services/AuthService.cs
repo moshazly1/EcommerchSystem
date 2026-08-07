@@ -55,7 +55,7 @@ namespace BackendEcommerchSystem.Services
           var resetToken = Guid.NewGuid().ToString();
             user.ResetPasswordToken = resetToken;
             user.ResetPasswordTokenExpiry = DateTime.UtcNow.AddMinutes(15); 
-            await _userRepository.UpdateAsync(user);
+             _userRepository.UpdateUser(user);
             await _userRepository.SaveChangesAsync();
             var resetLink = $"http://localhost:3000/reset-password?token={resetToken}&email={emailUser}";
             await _emailService.SendEmailAsync(emailUser , "Reset Password", $@"
@@ -88,7 +88,7 @@ namespace BackendEcommerchSystem.Services
              var refreshToken = GenerateRefrshToken();
             user.RefreshToken = refreshToken;
             user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
-             await _userRepository.UpdateAsync(user);   
+              _userRepository.UpdateUser(user);   
             await _userRepository.SaveChangesAsync();
             return new AuthResponseDTO
             {
@@ -113,7 +113,7 @@ namespace BackendEcommerchSystem.Services
             }
             user.RefreshToken = null;
             user.RefreshTokenExpiryTime = null;
-            await _userRepository.UpdateAsync(user);
+             _userRepository.UpdateUser(user);
             await _userRepository.SaveChangesAsync();
 
 
@@ -142,7 +142,7 @@ namespace BackendEcommerchSystem.Services
             user.RefreshToken = newRefreshToken; 
             user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
 
-            await _userRepository.UpdateAsync(user);
+             _userRepository.UpdateUser(user);
             await _userRepository.SaveChangesAsync();
 
             return new AuthResponseDTO
@@ -205,7 +205,7 @@ namespace BackendEcommerchSystem.Services
             user.RefreshToken = refreshToken;
             user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
 
-            await _userRepository.UpdateAsync(user);
+             _userRepository.UpdateUser(user);
             await _userRepository.SaveChangesAsync();
 
             return new AuthResponseDTO
@@ -243,9 +243,9 @@ namespace BackendEcommerchSystem.Services
             }
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
             user.ResetPasswordToken = null;
-            user.ResetPasswordTokenExpiry = null;  
-            await _userRepository.UpdateAsync(user);
-            await _userRepository.SaveChangesAsync(); 
+            user.ResetPasswordTokenExpiry = null;
+            _userRepository.UpdateUser(user);
+            await _userRepository.SaveChangesAsync();
             return true;    
 
         }

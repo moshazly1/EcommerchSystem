@@ -27,12 +27,18 @@ namespace BackendEcommerchSystem.Services
                 CreatedAt = DateTime.Now
             };  
             await _userRepository.AddAsync(user);
-            await _userRepository.SaveChangesAsync();   
+            await _userRepository.SaveChangesAsync();    
         }
 
-        public async Task DeleteUserAsync(int id)
+      
+
+        public async Task DeleteUser(int id)
         {
-            await _userRepository.DeleteUserAsync(id);
+            var user = await _userRepository.GetByIDAsync(id);
+            if (user == null) {
+                throw new Exception("User not found.");
+            }
+            _userRepository.DeleteUser(user); 
            await  _userRepository.SaveChangesAsync(); 
 
         }
@@ -73,9 +79,29 @@ namespace BackendEcommerchSystem.Services
                 Email = user.Email,
                 FullName = user.FullName,
                 Id = user.Id,
+                PhoneNumber = user.PhoneNumber , 
                 IsAcive = user.IsAcive,
                 Role = user.Role.ToString(),
-            };
+            }; 
+        }
+
+        public async Task UpdateEmailDigestAsync(int userId, bool emailDigest)
+        {
+            await _userRepository.UpdateEmailDigestAsync(userId, emailDigest); 
+        }
+
+        public async  Task   UpdateUser(int id, UpdateUserDTO update)
+        {
+            var user   =  await  _userRepository.GetByIDAsync(id);
+          if  (user  == null )
+          {
+           throw new Exception("User Not  Found ");
+          }
+            user.FullName = update.Fullname; 
+            user.PhoneNumber =  update.PhoneNumber;
+            _userRepository.UpdateUser(user);
+            await _userRepository.SaveChangesAsync();   
+
         }
     }
 }

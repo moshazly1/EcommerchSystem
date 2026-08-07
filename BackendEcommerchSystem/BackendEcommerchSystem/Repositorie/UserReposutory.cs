@@ -17,16 +17,7 @@ namespace BackendEcommerchSystem.Repositorie
             await _appDbContext.users.AddAsync(user); 
         }
 
-        public async Task DeleteUserAsync(int id)
-        {
-            var user = await _appDbContext.users.FirstOrDefaultAsync(u => u.Id == id);
-            if (user != null)
-            {
-                _appDbContext.users.Remove(user);
-                await _appDbContext.SaveChangesAsync();
-            }
-        }
-
+       
         public async Task<IEnumerable<User>> GetAllUserAsync()
         {
            var  user =   await _appDbContext.users.ToListAsync();
@@ -47,22 +38,32 @@ namespace BackendEcommerchSystem.Repositorie
         {
          await  _appDbContext.SaveChangesAsync();
         }
-
-        public void Update(User user)
-        {
-           _appDbContext.users.Update(user);
-        }
-
-        public async Task UpdateAsync(User user)
-        {
-            _appDbContext.users.Update(user);
-            await Task.CompletedTask; 
-        }
+     
         public async Task<User> GetByRefreshTokenAsync(string token)
         {
 
             return await _appDbContext.users.FirstOrDefaultAsync(u => u.RefreshToken == token);
         }
 
+        public void UpdateUser(User user)
+        {
+            _appDbContext.users.Update(user);
+        }
+
+        public void DeleteUser(User user)
+        {
+            _appDbContext.users.Remove(user);
+        }
+
+        public async Task UpdateEmailDigestAsync(int userId, bool emailDigest)
+        {
+            var user = await _appDbContext.users.FirstOrDefaultAsync(u=>u.Id == userId); 
+          if ( user == null)
+            {
+                throw new Exception("user Not  found"); 
+            }
+          user.EmailDigest = emailDigest;       
+            await _appDbContext.SaveChangesAsync(); 
+        }
     }
 }

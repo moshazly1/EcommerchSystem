@@ -9,6 +9,7 @@ import Authprovider from "./Context/AuthProvider";
 import { WishlistProvider } from "./Context/WishListContext";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import { CartContext, CartProvider } from "./Context/CartContext";
 const stripePromise = loadStripe(
   "pk_test_51TvrpYAWXc2AsGLay9m4bpFtkr6jqRzRrQmAHCCkxVyb8B92iKNIHAuj1t1SLWXdzJGayzU3Q7xLN4nztfmlh21Z00YGCWlZhk",
 );
@@ -18,9 +19,11 @@ root.render(
     <BrowserRouter>
       <Authprovider>
         <WishlistProvider>
-          <Elements stripe={stripePromise}>
-            <App />
-          </Elements>
+          <CartProvider>
+            <Elements stripe={stripePromise}>
+              <App />
+            </Elements>
+          </CartProvider>
         </WishlistProvider>
       </Authprovider>
     </BrowserRouter>

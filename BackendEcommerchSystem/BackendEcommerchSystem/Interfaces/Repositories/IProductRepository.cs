@@ -4,6 +4,8 @@ namespace BackendEcommerchSystem.Interfaces.Repositories
     public interface IProductRepository
     {
         Task<IEnumerable<Product>> GetAllProductsAsync();
+        Task<IEnumerable<Product>> GetProductsAddedLastWeekAsync(); 
+
         Task<(IEnumerable<Product> Products, int TotalCount)> GetAllLaptopAsync(int page, int pageSize);
         Task<(IEnumerable<Product> Products, int TotalCount)> GetAllPCsAsync(int page, int pageSize);
         Task<(IEnumerable<Product> Products, int TotalCount)> GetAllMiceAsync(int page, int pageSize);

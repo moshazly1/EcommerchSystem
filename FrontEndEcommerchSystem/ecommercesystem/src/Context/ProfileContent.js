@@ -3,7 +3,6 @@ import SideBarProfile from "./DashBoardProfile/SideBarBrofile";
 import { ProfileProvider, useProfile } from "../Context/ProfileContext";
 import UserID from "./UserID";
 
-// ✅ component منفصل
 function ProfileContent() {
   const { stats } = useProfile();
   return (
@@ -23,7 +22,6 @@ function ProfileContent() {
   );
 }
 
-// ✅ Profile بيلف ProfileContent بالـ Provider
 export default function Profile() {
   return (
     <ProfileProvider>

@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useAxiosPrivate from "../../Features/Auth/hooks/useAxiosPrivate";
 import { basURL, CART, DELETITEMSCART, UPDATECART } from "../../API/api";
-
+import { CartContext } from "../../Context/CartContext";
 export default function useCartItems() {
   const [Cart, setCart] = useState(null);
-
+  const { fetchCart } = useContext(CartContext);
   const [loding, setLoding] = useState(true);
   const [error, setError] = useState(null);
   const axiosPrivate = useAxiosPrivate();
@@ -28,7 +28,7 @@ export default function useCartItems() {
       await axiosPrivate.delete(`${basURL}${DELETITEMSCART}/${cartItemId}`);
 
       const res = await axiosPrivate.get(`${basURL}${CART}`);
-
+      await fetchCart();
       setCart(res.data);
     } catch (err) {
       console.log(err);
