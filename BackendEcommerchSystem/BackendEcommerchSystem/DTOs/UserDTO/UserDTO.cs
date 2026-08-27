@@ -14,5 +14,11 @@ namespace BackendEcommerchSystem.DTOs.UserDTO
         public string PhoneNumber {  get; set; } = string.Empty;        
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public bool AccountActivity { get; set; }
+        public bool EmailDigest {  get; set; } 
+        public bool IsTwoFactorAuth { get; set; }       
+
+
+        
     }
 }

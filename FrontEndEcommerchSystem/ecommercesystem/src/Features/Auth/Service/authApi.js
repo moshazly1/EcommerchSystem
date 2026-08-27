@@ -7,6 +7,8 @@ import {
   REFRESHTOKEN,
   FORGETPASSWORD,
   RESETPASSWORD,
+  SENDCODETOWFACTOR,
+  RESENDCODEFACTOR,
 } from "../../../API/api";
 
 export const LoginRequast = async (formData) => {
@@ -57,4 +59,29 @@ export const ResetPasswordRequest = async (Data) => {
     headers: { "Content-Type": "application/json" },
     withCredentials: true,
   });
+};
+export const VerifyTwoFactorCode = async (email, code) => {
+  try {
+    const res = await axios.post(`${basURL}${SENDCODETOWFACTOR}`, {
+      email,
+      code,
+    });
+
+    return res.data;
+  } catch (err) {
+    console.log("Verify 2FA error:", err);
+    throw err;
+  }
+};
+export const ResendTwoFactorcode = async (email) => {
+  try {
+    const res = await axios.post(`${basURL}${RESENDCODEFACTOR}`, {
+      email,
+    });
+    console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };

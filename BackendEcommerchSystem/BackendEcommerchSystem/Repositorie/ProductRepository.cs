@@ -127,5 +127,18 @@ namespace BackendEcommerchSystem.Repositorie
             var lastProduct = await _appContext.products.Where(p => p.CreatedAt > lastWeek).ToListAsync();
             return lastProduct;     
         }
+
+        public async Task<(decimal MinPrice, decimal MaxPrice)> GetPriceRangeAsync()
+        {
+            var hasProduct = await _appContext.products.AnyAsync();
+            if (!hasProduct)
+            {
+                return (0,0);
+            }
+
+            var  minPrice  = await _appContext.products.MinAsync(p=> p.Price);
+            var maxPrice = await _appContext.products.MaxAsync(p=> p.Price);
+            return (minPrice, maxPrice);  
+        }
     }
 }

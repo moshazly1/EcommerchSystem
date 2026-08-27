@@ -17,5 +17,7 @@ namespace BackendEcommerchSystem.DTOs.AcountDTO
         public string RefreshToken { get; set; }
         public DateTime RefreshTokenExpiration { get; set; } = DateTime.UtcNow;
         public UserRole Role { get; set; }
+        public bool RequiresTwoFactor { get; set; }
+        public DateTime? TwoFactorCodeExpiresAt { get; set; }
     }
 }

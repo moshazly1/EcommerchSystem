@@ -13,14 +13,22 @@ namespace BackendEcommerchSystem.Services
        _emailService = emailService;    
             _userRepository = userRepository;   
             _productRepository = productRepository;     
-        }        
+        }
+
+       
+     
+
         public async Task SendEmailDigestAsync()
         {
+           
             var users = await _userRepository.GetAllUserAsync();
-            var Products = await _productRepository.GetProductsAddedLastWeekAsync(); 
+            var Products = await _productRepository.GetProductsAddedLastWeekAsync();
 
-            foreach (var user in users) { 
-             if(!Products.Any())
+
+           
+            foreach (var user in users) {
+               
+                if (!Products.Any())
                {
                     return; 
                 }
@@ -28,7 +36,7 @@ namespace BackendEcommerchSystem.Services
              {
                   continue;    
              }
-
+                
                 string body = "<h2>New Products This Week</h2>";
                 body += $"<p>Hello {user.FullName},</p>";
                 body += "<p>Check out the new products added this week:</p>";

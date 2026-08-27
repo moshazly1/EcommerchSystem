@@ -31,6 +31,7 @@ import WhitsList from "./Pages/DashBoardProfile/WhitsList";
 import Setting from "./Pages/DashBoardProfile/Setting";
 import Orders from "./Pages/DashBoardProfile/Orders";
 import CheckOut from "./Pages/CheckOut";
+import VerificationCode from "./Features/Auth/Components/Pages/VirficationCode";
 
 const ROLES = {
   Admin: 1,
@@ -44,6 +45,7 @@ export default function App() {
       <Route element={<Layout />}>
         {/* ================= PUBLIC ROUTES ================= */}
         <Route path="/" element={<HomePage />} />
+        <Route path="/verify-2fa" element={<VerificationCode />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<Register />} />
 

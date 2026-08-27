@@ -1,4 +1,5 @@
-﻿using BackendEcommerchSystem.DTOs.UserDTO;
+﻿using BackendEcommerchSystem.DTOs.AddNoteficationDTO;
+using BackendEcommerchSystem.DTOs.UserDTO;
 using BackendEcommerchSystem.Entities;
 
 namespace BackendEcommerchSystem.Interfaces.Services
@@ -13,5 +14,7 @@ namespace BackendEcommerchSystem.Interfaces.Services
         Task DeleteUser(int id);
 
         Task UpdateEmailDigestAsync(int userId , bool emailDigest); 
+        Task UpdateAccountActivity (int   userId ,  bool  emailDigestDto);
+        Task EnableTwoFactorAuthantication(int userId, bool isEnble);
     }
 }

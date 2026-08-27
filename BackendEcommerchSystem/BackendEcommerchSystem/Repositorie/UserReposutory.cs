@@ -65,5 +65,16 @@ namespace BackendEcommerchSystem.Repositorie
           user.EmailDigest = emailDigest;       
             await _appDbContext.SaveChangesAsync(); 
         }
+
+        public async Task UpdatAaccountActivity(int userId, bool accountActivity)
+        {
+            var user = await _appDbContext.users.FirstOrDefaultAsync(u=>u.Id == userId);
+            if (user == null )
+            {
+                throw new Exception("user Not Found "); 
+            }
+            user.AccountActivity = accountActivity;     
+            await _appDbContext.SaveChangesAsync();     
+        }
     }
 }

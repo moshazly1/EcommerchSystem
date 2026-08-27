@@ -26,6 +26,15 @@ export const GETALLWL = "api/WhiteList/WhiteList";
 export const PAYMENT = "api/Payment/create-payment-intent";
 export const ADDORDER = "api/Order";
 export const SHOWORDER = "api/Order/my-orders";
+export const EMAILDIGEST = "api/User/email-digest";
+export const ACCOUNTACTIVATION = "api/User/Account-Activity";
+export const TWOFACTOORISENABLE = "api/User/two-Factor";
+export const SENDCODETOWFACTOR = "api/Auth/verfy-2fa";
+export const RESENDCODEFACTOR = "api/Auth/Resend-2fa";
+export const GETALLBRAND = "api/Brand";
+export const GETALLCATEGORY = "api/Category/GetAllCategory";
+export const GETALLSUBCATEGORY = "api/SubCategory";
+export const GETRANGEPRICE = "api/Product/price-range";
 export const axiosPrivate = axios.create({
   baseURL: basURL,
   headers: { "Content-Type": "application/json" },

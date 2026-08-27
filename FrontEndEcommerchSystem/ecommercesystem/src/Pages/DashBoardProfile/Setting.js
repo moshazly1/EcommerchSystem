@@ -1,14 +1,27 @@
-import { Button, Card, Form } from "react-bootstrap";
+import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import useSettings from "../../Components/hooks/useSetting";
-
+import { useState } from "react";
+import { ArrowClockwise, ShieldCheck } from "react-bootstrap-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function Setting() {
-  const { data, setData, UpdateUser } = useSettings();
+  const {
+    data,
+    setData,
+    TwoFactorAuth,
+    UpdateUser,
+    emailDigest,
+    toggleEmailDigest,
+    toggelAccountActive,
+    AccountActeve,
+    ButtomIsEnable,
+  } = useSettings();
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  console.log(data);
+  console.log(TwoFactorAuth);
+
   return (
     <div style={{ backgroundColor: "#F9F9F9" }}>
       <h1 style={{ fontSize: "3rem" }}>Settings</h1>
@@ -100,7 +113,112 @@ export default function Setting() {
         </Form>
       </Card>
       <h1 className="my-5">Notification Preferences</h1>
-      <Card className=""></Card>
+      <Card className="p-4 shadow-sm border-0 rounded-4">
+        <div className="d-flex justify-content-between align-items-center my-4">
+          <div>
+            <h4 className="mb-1 fw-bold">Email Digest</h4>
+
+            <p className="text-muted mb-0">
+              Receive weekly summaries of new arrivals and tech insights curated
+              for you.
+            </p>
+          </div>
+
+          <Form.Check
+            className="fs-4"
+            type="switch"
+            id="email-digest-switch"
+            checked={emailDigest}
+            onChange={(e) => toggleEmailDigest(e.target.checked)}
+          />
+        </div>
+        <hr />
+        <div className="d-flex justify-content-between align-items-center my-4">
+          <div>
+            <h4 className="mb-1 fw-bold">SMS Order Updates</h4>
+
+            <p className="text-muted mb-0">
+              Instant text notifications for shipping status and delivery
+              confirmations.
+            </p>
+          </div>
+
+          <Form.Check className="fs-4" type="switch" id="email-digest-switch" />
+        </div>
+        <hr />
+        <div className="d-flex justify-content-between align-items-center my-4">
+          <div>
+            <h4 className="mb-1 fw-bold">Account Activity</h4>
+
+            <p className="text-muted mb-0">
+              Get notified of security alerts, new logins, and password changes.
+            </p>
+          </div>
+
+          <Form.Check
+            className="fs-4"
+            type="switch"
+            id="email-digest-switch"
+            checked={AccountActeve}
+            onChange={(e) => toggelAccountActive(e.target.checked)}
+          />
+        </div>
+      </Card>
+      <Row>
+        <h2 className="my-5">Security</h2>
+
+        <Col>
+          <Card className="p-4 border-0 m-2">
+            <div className="d-flex align-items-center gap-3">
+              <div
+                className="p-2 border rounded-3"
+                style={{
+                  backgroundColor: "#a7c1f9",
+                  transition: "all 0.3s ease",
+                }}
+              >
+                <ArrowClockwise size={24} color="#2563eb" />
+              </div>
+
+              <h3 className="fw-bold mb-0">Password Protocol</h3>
+            </div>
+            <p className="pt-3  text-secondary ">
+              It is recommended to update your password every 90 days to
+              maintain optimal account security.
+            </p>
+            <Button>Change Password</Button>
+          </Card>
+        </Col>
+
+        <Col>
+          <Card className="p-4 border-0 m-2">
+            <div className="d-flex align-items-center gap-3">
+              <div
+                className="p-2 border rounded-3"
+                style={{
+                  backgroundColor: "#a7c1f9",
+                  transition: "all 0.3s ease",
+                }}
+              >
+                <ShieldCheck size={24} color="#2563eb" />
+              </div>
+
+              <h3 className="fw-bold mb-0">2FA Authentication</h3>
+            </div>
+            <p className="pt-3 text-secondary">
+              Add an extra layer of protection by requiring a code from your
+              mobile device upon login.
+            </p>
+            <Button
+              onClick={() => ButtomIsEnable(!TwoFactorAuth)}
+              className="border-0"
+              style={{ backgroundColor: "#c6c6c6" }}
+            >
+              {TwoFactorAuth ? "Disable" : "Enable"} 2FA
+            </Button>
+          </Card>
+        </Col>
+      </Row>
     </div>
   );
 }

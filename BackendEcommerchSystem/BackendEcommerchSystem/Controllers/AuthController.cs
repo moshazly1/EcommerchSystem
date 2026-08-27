@@ -1,6 +1,8 @@
 ﻿using BackendEcommerchSystem.DTOs.AcountDTO;
+using BackendEcommerchSystem.DTOs.UserDTO;
 using BackendEcommerchSystem.Interfaces.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Org.BouncyCastle.Utilities;
 
@@ -10,11 +12,11 @@ namespace BackendEcommerchSystem.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly  IAuthService _authService;        
+        private readonly IAuthService _authService;
 
         public AuthController(IAuthService authService)
         {
-            _authService = authService; 
+            _authService = authService;
         }
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDTO model)
@@ -34,7 +36,7 @@ namespace BackendEcommerchSystem.Controllers
             Response.Cookies.Append("refreshToken", result.RefreshToken, new CookieOptions
             {
                 HttpOnly = true,
-                Secure = false, // false لو localhost
+                Secure = false,
                 SameSite = SameSiteMode.Lax,
                 Expires = result.RefreshTokenExpiration
             });
@@ -59,6 +61,19 @@ namespace BackendEcommerchSystem.Controllers
 
             var result = await _authService.LoginAsync(model);
 
+            // 2FA required
+            if (result.RequiresTwoFactor)
+            {
+                return Ok(new
+                {
+                    isAuthentication = false,
+                    requiresTwoFactor = true,
+                    mesage = result.Mesage , 
+                   email = model.Email,
+                    twoFactorCodeExpiresAt = result.TwoFactorCodeExpiresAt
+                });
+            }
+
             if (!result.IsAuthentication)
             {
                 return Unauthorized(result.Mesage);
@@ -67,7 +82,7 @@ namespace BackendEcommerchSystem.Controllers
             Response.Cookies.Append("refreshToken", result.RefreshToken, new CookieOptions
             {
                 HttpOnly = true,
-                Secure = false, // false لو localhost
+                Secure = false,
                 SameSite = SameSiteMode.Lax,
                 Expires = result.RefreshTokenExpiration
             });
@@ -75,6 +90,7 @@ namespace BackendEcommerchSystem.Controllers
             return Ok(new
             {
                 isAuthentication = true,
+                requiresTwoFactor = false,
                 mesage = result.Mesage,
                 accessToken = result.AccessToken,
                 username = result.Username,
@@ -83,7 +99,7 @@ namespace BackendEcommerchSystem.Controllers
             });
         }
         [HttpPost("refreshToken")]
-   
+
         public async Task<IActionResult> RefreshToken()
         {
             var token = Request.Cookies["refreshToken"];
@@ -98,7 +114,7 @@ namespace BackendEcommerchSystem.Controllers
             {
                 HttpOnly = true,
                 Secure = false,
-                SameSite = SameSiteMode.Lax,  // ✅ نفس إعداد Login/Register
+                SameSite = SameSiteMode.Lax,  
                 Expires = result.RefreshTokenExpiration
             });
 
@@ -112,12 +128,12 @@ namespace BackendEcommerchSystem.Controllers
         }
 
         [HttpPost("logout")]
-        public  async Task<IActionResult> Logout()
+        public async Task<IActionResult> Logout()
         {
-            var token = Request.Cookies["refreshToken"]; 
-            if(!string.IsNullOrEmpty(token))
+            var token = Request.Cookies["refreshToken"];
+            if (!string.IsNullOrEmpty(token))
             {
-                await _authService.LogoutAsync(token);  
+                await _authService.LogoutAsync(token);
             }
             Response.Cookies.Delete("refreshToken", new CookieOptions
             {
@@ -126,10 +142,10 @@ namespace BackendEcommerchSystem.Controllers
                 SameSite = SameSiteMode.Lax,
                 Path = "/"
             });
-            return Ok("Logged Out Successfully"); 
+            return Ok("Logged Out Successfully");
         }
 
-     
+
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordDTO model)
         {
@@ -157,15 +173,67 @@ namespace BackendEcommerchSystem.Controllers
                 message = "If the email exists, a reset link has been sent."
             });
         }
-        [HttpPost("resetPassword")] 
-        public async Task<IActionResult> ResetPassword( [FromBody] ResetPaswordDTO model)
+        [HttpPost("resetPassword")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPaswordDTO model)
         {
-            var resalt = await _authService.ResetPasswordAsync(model.Email, model.Token, model.NewPassword); 
+            var resalt = await _authService.ResetPasswordAsync(model.Email, model.Token, model.NewPassword);
             if (!resalt)
             {
-                return BadRequest("Invalid or expired token!"); 
+                return BadRequest("Invalid or expired token!");
             }
-            return Ok("Password reset successfully!"); 
+            return Ok("Password reset successfully!");
         }
+
+        [HttpPost("verfy-2fa")]
+        public async Task<IActionResult> VerfiyTwoFactor([FromBody] VerifyTwoeFactorDTO model)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState); 
+            }
+
+            var result = await _authService.VerifyTwoFactorAsync(model); 
+            if(!result.IsAuthentication)
+            {
+                return Unauthorized(result.Mesage); 
+            }
+            Response.Cookies.Append("refreshToken", result.RefreshToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = false,
+                SameSite = SameSiteMode.Lax,
+                Expires = result.RefreshTokenExpiration
+            });
+            return Ok(new
+            {
+                isAuthentication = true,
+                message = result.Mesage,
+                accessToken = result.AccessToken,
+                username = result.Username,
+                email = result.Email,
+                role = result.Role
+            });
+
+        }
+
+        [HttpPost("Resend-2fa")]
+        public async Task<IActionResult> ResendTwoFactor([FromBody]   ResendTowFactorDTO model)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);      
+            }
+            var resalt = await _authService.ResendTwoFactorCodeAsync(model.Email); 
+            if(!resalt.RequiresTwoFactor)
+            {
+                return BadRequest(resalt.Mesage);
+            }
+            return Ok(new
+            {
+                mesage = resalt.Mesage,
+                twoFactorCodeExpiresAt = resalt.TwoFactorCodeExpiresAt,
+            });
+        }
+    
     }
 }

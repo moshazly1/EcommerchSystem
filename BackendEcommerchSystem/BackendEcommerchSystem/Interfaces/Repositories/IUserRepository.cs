@@ -12,6 +12,8 @@ namespace BackendEcommerchSystem.Interfaces.Repositories
         void DeleteUser(User user);
         Task UpdateEmailDigestAsync(int userId, bool emailDigest);
         Task SaveChangesAsync();
-         Task<User> GetByRefreshTokenAsync(string token); 
+         Task<User> GetByRefreshTokenAsync(string token);
+        Task UpdatAaccountActivity(int  userId ,  bool accountActivity);  
+    
     }
 }

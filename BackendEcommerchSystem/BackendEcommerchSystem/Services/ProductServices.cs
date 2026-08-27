@@ -1,4 +1,5 @@
-﻿using BackendEcommerchSystem.DTOs.ProductDTO;
+﻿using BackendEcommerchSystem.DTOs.FiltrationDTO;
+using BackendEcommerchSystem.DTOs.ProductDTO;
 using BackendEcommerchSystem.Entities;
 using BackendEcommerchSystem.Enums;
 using BackendEcommerchSystem.Interfaces.Repositories;
@@ -10,9 +11,12 @@ namespace BackendEcommerchSystem.Services
     public class ProductServices : IProductService
     {
         private readonly IProductRepository _productRepository;
-        public ProductServices(IProductRepository productRepository) {
+        private readonly IProductService _productService;
+        private readonly IProductFilterReposatory _productFilterReposatory; 
+        public ProductServices(IProductRepository productRepository , IProductFilterReposatory  productFilterReposatory) {
 
-            _productRepository = productRepository;       
+            _productRepository = productRepository; 
+            _productFilterReposatory = productFilterReposatory; 
         }        
 
         public async Task<IEnumerable<ProductListDTO>> GetAllProduct()
@@ -244,6 +248,37 @@ namespace BackendEcommerchSystem.Services
                 PageSize = pageSize,
                 TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize) // 21
             }; 
+        }
+
+        public async Task<IEnumerable<ProductListDTO>> GetFilteredProductsAsync(ProductFilterDTO dto)
+        {
+            var Products = await _productFilterReposatory.GetFilteredProductsAsync(dto);
+            var resalt = Products.Select(p => new ProductListDTO
+            {
+                Description= p.Description, 
+                Id = p.Id,  
+                Name = p.Name,  
+                Price = p.Price,        
+                Stock = p.Stock,    
+                Condition = p.Condition,
+                MainImageUrl = p.ProductImages
+         .FirstOrDefault(img => img.ImageType == ProductImageType.Main)?.ImageUrl
+         ?? p.ProductImages.FirstOrDefault()?.ImageUrl
+         ?? ""
+
+            }); 
+
+            return resalt;
+        }
+
+        public async Task<PriceRangeDTO> GetPriceRangeAsync()
+        {
+            var(minPrice , maxPrice ) = await _productRepository.GetPriceRangeAsync();
+            return new PriceRangeDTO
+            {
+                MaxPrice = maxPrice,
+                MinPrice = minPrice,
+            };
         }
     }
 }

@@ -29,7 +29,12 @@ namespace BackendEcommerchSystem.Entities
         public DateTime? RefreshTokenExpiryTime { get; set; }
         public bool EmailDigest { get; set; } = true; 
         public bool  SmsUpdates { get; set; } = true;           
-        public bool AccountActivity { get; set; } = true;       
+        public bool AccountActivity { get; set; } = true;
+
+        public bool TwoFactorEnabled { get; set; }
+        public string? TowFactorCode { get; set; }
+        public DateTime? TowFactorCodeExpiresAt { get; set; }        
+        
         // Forgot Password
         public string? ResetPasswordToken { get; set; }
         public DateTime? ResetPasswordTokenExpiry { get; set; }

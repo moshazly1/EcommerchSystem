@@ -18,42 +18,75 @@ export const useLogin = () => {
 
   const HandelSubmit = async (e) => {
     e.preventDefault();
+
     setLoading(true);
     setMessage("");
+
     try {
       const res = await LoginRequast(formData);
-      console.log(res);
-      const Token = res?.data?.accessToken;
-      const userDetalse = res.data;
-      const roles = res?.data?.role;
 
-      console.log(res);
-      console.log(Token);
-      setAuth({ accessToken: Token, user: userDetalse, roles });
+      await console.log("Login response:", res.data);
 
-      if (res && res.data) {
-        console.log(res.data);
+      //  2FA Required
+
+      if (res.data.requiresTwoFactor == true) {
         setMessage(res.data.mesage);
-        setIsvaled(res.data.isAuthentication || false);
+        console.log("🚀 Going to Verify 2FA");
+        navigate("/verify-2fa", {
+          state: {
+            email: formData.email,
+            expiresAt: res.data.twoFactorCodeExpiresAt,
+          },
+        });
 
-        if (res.data.isAuthentication) {
-          if (Number(res.data.role) === 1) {
-            navigate("/dashboard");
-          } else if (Number(res.data.role) === 2) {
-            navigate("/");
-          } else {
-            navigate("/unauthorized");
-          }
-        }
+        return;
       }
+
+      //  Normal Login Success
+
+      if (res.data.isAuthentication) {
+        const token = res.data.accessToken;
+        const userDetails = res.data;
+        const roles = res.data.role;
+
+        setAuth({
+          accessToken: token,
+          user: userDetails,
+          roles,
+        });
+
+        setMessage(res.data.mesage);
+        setIsvaled(true);
+
+        if (Number(roles) === 1) {
+          navigate("/dashboard");
+        } else if (Number(roles) === 2) {
+          navigate("/");
+        } else {
+          navigate("/unauthorized");
+        }
+
+        return;
+      }
+
+      //  Login Failed
+
+      setMessage(res.data.mesage || "Login failed.");
+      setIsvaled(false);
     } catch (err) {
-      if (err.response && err.response.data) {
-        setMessage(err.response.data);
+      console.log("Login error:", err);
+
+      if (err.response?.data) {
+        setMessage(
+          typeof err.response.data === "string"
+            ? err.response.data
+            : err.response.data.message || "Login failed.",
+        );
       } else {
         setMessage("Server not reachable");
       }
+
       setIsvaled(false);
-      console.log(err);
     } finally {
       setLoading(false);
     }

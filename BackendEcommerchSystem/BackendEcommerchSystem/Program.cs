@@ -42,6 +42,7 @@ namespace BackendEcommerchSystem
             builder.Services.AddScoped<IWhiteListServices, WhiteListService>();
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
             builder.Services.AddScoped<IOrderServices, OrderServices>();
+            builder.Services.AddScoped<IProductFilterReposatory, ProductFilterReposatory>();
             builder.Services.AddScoped<INotificationService , NotificationService>();
             builder.Services.AddControllers();
             builder.Services.AddAuthentication(opthion =>
@@ -86,7 +87,7 @@ namespace BackendEcommerchSystem
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+             
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -102,9 +103,10 @@ namespace BackendEcommerchSystem
             app.UseAuthorization();
 
             RecurringJob.AddOrUpdate<INotificationService>(
-                "WeeklyProducts" ,
-                x=>x.SendEmailDigestAsync() , 
-                Cron.Weekly(DayOfWeek.Friday , 9) 
+                "WeeklyProducts",
+                x => x.SendEmailDigestAsync(),
+            
+                Cron.Weekly(DayOfWeek.Friday , 9)
                 ); 
             app.MapControllers();
 

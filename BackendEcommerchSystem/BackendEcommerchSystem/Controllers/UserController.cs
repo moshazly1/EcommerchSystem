@@ -173,5 +173,27 @@ namespace BackendEcommerchSystem.Controllers
             await _userServises.UpdateEmailDigestAsync(userId , dto.EmailDigest);
             return Ok("User Update Notification"); 
         }
+
+        [HttpPut("Account-Activity")]
+        [Authorize]
+        public async Task<IActionResult> UpdateAccountActivity(UpdateAccountActivityDto dto)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            await _userServises.UpdateAccountActivity(userId, dto.AccountActivity);
+            return Ok("User  Account Activity");
+        }
+
+        [HttpPut("two-Factor")]
+        [Authorize] 
+        public async Task<IActionResult> UpdateTowFactor([FromBody] Update2FactorAuthanticationDTO dto )
+        {
+            BaseResponseModel respons = new BaseResponseModel();
+            var userid = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value) ;
+
+            await _userServises.EnableTwoFactorAuthantication(userid , dto.IsTwoFactorEnabled);
+            respons.StatusMessage = dto.IsTwoFactorEnabled ? "Two-factor authentication enabled successfully." : "Two-factor authentication disabled successfully.";
+            respons.Status = true;
+            return Ok(respons);
+        }
     }
 }

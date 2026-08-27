@@ -17,6 +17,15 @@ namespace BackendEcommerchSystem.Controllers
         public ProductController(IProductService ProductService) {
             _ProductService = ProductService;
         }
+
+
+        [HttpGet("price-range")]
+        public async Task<IActionResult> GetPriceRange()
+        {
+            var result = await _ProductService.GetPriceRangeAsync();
+            return Ok(result);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAllProduct()
         {

@@ -2,6 +2,8 @@
 {
     public interface INotificationService
     {
-        Task SendEmailDigestAsync(); 
+        Task SendEmailDigestAsync();
+     
+
     }
 }
